@@ -1,2 +1,2 @@
 # librarian-core
-Core Librarian Source
+Core Librarian classes

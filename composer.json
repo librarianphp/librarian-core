@@ -1,0 +1,16 @@
+{
+  "name": "minicli/librarian-core",
+  "type": "library",
+  "description": "Core Librarian Package",
+  "license": "MIT",
+  "homepage": "https://github.com/minicli/librarian-core",
+  "autoload": {
+    "psr-4": {
+      "Librarian\\": "src/"
+    }
+  },
+  "require": {
+    "ext-curl": "*",
+    "erusev/parsedown-extra": "^0.8.1"
+  }
+}
