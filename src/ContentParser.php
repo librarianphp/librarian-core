@@ -3,6 +3,7 @@
 
 namespace Librarian;
 
+use Librarian\CustomTagParser\GithubCustomTagParser;
 use Librarian\CustomTagParser\TwitterCustomTagParser;
 use Librarian\CustomTagParser\YoutubeCustomTagParser;
 
@@ -38,6 +39,7 @@ class ContentParser
 
         $this->addCustomTagParser('twitter', new TwitterCustomTagParser());
         $this->addCustomTagParser('youtube', new YoutubeCustomTagParser());
+        $this->addCustomTagParser('github', new GithubCustomTagParser());
     }
 
     public function addCustomTagParser($name, CustomTagParserInterface $tag_parser)
