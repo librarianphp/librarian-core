@@ -7,7 +7,7 @@ use Librarian\ContentCollection;
 use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
-use Minicli\Util\FileCache;
+use Minicli\Minicache\FileCache;
 use Minicli\Miniweb\Request;
 
 class ContentServiceProvider implements ServiceInterface
