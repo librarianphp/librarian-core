@@ -18,6 +18,8 @@ class ContentServiceProvider implements ServiceInterface
     /** @var string */
     protected $cache_path;
 
+    /** @var array */
+    protected $parser_params = [];
     /**
      * @param App $app
      * @throws \Exception
@@ -34,6 +36,11 @@ class ContentServiceProvider implements ServiceInterface
 
         $this->data_path = $app->config->data_path;
         $this->cache_path = $app->config->cache_path;
+
+        //optional render parameters for the parsers, should be provided in the apps config
+        if ($app->config->has('parser_params')) {
+            $this->parser_params = $app->config->parser_params;
+        }
     }
 
     /**
@@ -48,7 +55,7 @@ class ContentServiceProvider implements ServiceInterface
         $content = new Content($filename);
 
         try {
-            $content->load();
+            $content->load($this->parser_params);
             $content->setRoute($request->getRoute());
 
         } catch (ContentNotFoundException $e) {
@@ -84,7 +91,27 @@ class ContentServiceProvider implements ServiceInterface
         }
 
         $ordered_content = array_reverse($list);
+        if (!$limit) {
+            return new ContentCollection($ordered_content);
+        }
+
         return new ContentCollection(array_slice($ordered_content, $start, $limit));
+    }
+
+    public function fetchTotalPages($per_page = 20)
+    {
+        $cache = new FileCache($this->cache_path);
+        $cache_id = "full_pagination";
+
+        $cached_content = $cache->getCachedUnlessExpired($cache_id);
+
+        if ($cached_content !== null) {
+            return json_decode($cached_content, true);
+        }
+
+        $content = $this->fetchAll(0, 0);
+
+        return (int) ceil($content->total() / $per_page);
     }
 
     /**
@@ -101,8 +128,7 @@ class ContentServiceProvider implements ServiceInterface
             return json_decode($cached_content, true);
         }
 
-        /** @var ContentCollection $content */
-        $content = $this->fetchAll(0, 1000);
+        $content = $this->fetchAll(0, 0);
         $tags = [];
 
         /** @var Content $article */

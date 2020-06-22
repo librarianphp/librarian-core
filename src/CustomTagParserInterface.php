@@ -5,5 +5,5 @@ namespace Librarian;
 
 interface CustomTagParserInterface
 {
-    public function parse($tag_value);
+    public function parse($tag_value, array $params = []);
 }

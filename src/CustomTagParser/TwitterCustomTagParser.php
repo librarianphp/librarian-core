@@ -8,7 +8,12 @@ use Minicli\Curly\Client;
 
 class TwitterCustomTagParser implements CustomTagParserInterface
 {
-    public function parse($tag_value)
+    /**
+     * @param $tag_value
+     * @param array $params
+     * @return string
+     */
+    public function parse($tag_value, array $params = [])
     {
         return $this->fetchTwitterEmbed($tag_value);
     }

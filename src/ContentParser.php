@@ -25,13 +25,19 @@ class ContentParser
 
     /** @var array */
     protected $custom_tag_parsers;
+
+    /** @var array */
+    protected $parser_params;
+
     /**
      * ContentParser constructor.
      * @param string $content
+     * @param array $parser_params
      */
-    public function __construct($content = null)
+    public function __construct($content = null, array $parser_params = [])
     {
         $this->original_content = $content;
+        $this->parser_params = $parser_params;
 
         if ($content !== null) {
             $this->parse();
@@ -136,7 +142,8 @@ class ContentParser
                 if (array_key_exists($match[1], $this->custom_tag_parsers)) {
                     $parser = $this->custom_tag_parsers[$match[1]];
                     if ($parser instanceof CustomTagParserInterface) {
-                        return $parser->parse($match[2]);
+                        $params = $this->parser_params[$match[1]] ?? [];
+                        return $parser->parse($match[2], $params);
                     }
                 }
 

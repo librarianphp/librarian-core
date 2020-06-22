@@ -12,9 +12,10 @@ class GithubCustomTagParser implements CustomTagParserInterface
     /**
      * Returns referred github content as a markdown code block.
      * @param $tag_value
+     * @param array $params
      * @return string
      */
-    public function parse($tag_value)
+    public function parse($tag_value, array $params = [])
     {
         if ($this->validateUrl($tag_value)) {
             $client = new Client();

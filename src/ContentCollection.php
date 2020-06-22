@@ -63,4 +63,9 @@ class ContentCollection implements Iterator
     {
         $this->current_position = 0;
     }
+
+    public function total()
+    {
+        return count($this->content_list);
+    }
 }

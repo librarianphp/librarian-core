@@ -79,10 +79,10 @@ class Content
     }
 
     /**
+     * @param array $parser_params
      * @throws ContentNotFoundException
-     * @throws \Exception
      */
-    public function load()
+    public function load(array $parser_params = [])
     {
         if (!file_exists($this->path)) {
             throw new ContentNotFoundException('Content not found.');
@@ -90,7 +90,7 @@ class Content
 
         $source = file_get_contents($this->path);
 
-        $parser = new ContentParser($source);
+        $parser = new ContentParser($source, $parser_params);
         $this->front_matter = $parser->getFrontMatter();
 
         $this->title = $this->frontMatterGet('title', $this->getAlternateTitle());
