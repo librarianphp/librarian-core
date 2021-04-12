@@ -9,6 +9,8 @@ use Minicli\App;
 use Minicli\ServiceInterface;
 use Minicli\Minicache\FileCache;
 use Minicli\Miniweb\Request;
+use Parsed\ContentParser;
+use Parsed\CustomTagParserInterface;
 
 class ContentServiceProvider implements ServiceInterface
 {
@@ -20,6 +22,10 @@ class ContentServiceProvider implements ServiceInterface
 
     /** @var array */
     protected $parser_params = [];
+
+    /** @var ContentParser */
+    protected $parser;
+
     /**
      * @param App $app
      * @throws \Exception
@@ -41,6 +47,13 @@ class ContentServiceProvider implements ServiceInterface
         if ($app->config->has('parser_params')) {
             $this->parser_params = $app->config->parser_params;
         }
+
+        $this->parser = new ContentParser($this->parser_params);
+    }
+
+    public function registerTagParser(string $name, CustomTagParserInterface $tag_parser)
+    {
+        $this->parser->addCustomTagParser($name, $tag_parser);
     }
 
     /**
@@ -51,12 +64,14 @@ class ContentServiceProvider implements ServiceInterface
     public function fetch(Request $request)
     {
         $filename = $this->data_path . '/' . $request->getRoute() . '/' . $request->getSlug() . '.md';
-
-        $content = new Content($filename);
+        $content = new Content();
 
         try {
-            $content->load($this->parser_params);
+            $content->load($filename);
             $content->setRoute($request->getRoute());
+
+            $parser = new ContentParser($this->parser_params);
+            $content->parse($parser);
 
         } catch (ContentNotFoundException $e) {
             return null;
@@ -70,17 +85,17 @@ class ContentServiceProvider implements ServiceInterface
      * @param int $limit
      * @return ContentCollection
      */
-    public function fetchAll($start = 0, $limit = 20)
+    public function fetchAll($start = 0, $limit = 20): ContentCollection
     {
         $list = [];
-        foreach (glob($this->data_path . '/*', GLOB_ONLYDIR) as $route) {
+        echo $this->data_path;
+        foreach (glob($this->data_path . '/*') as $route) {
             $content_type = basename($route);
-
             foreach (glob($route . '/*.md') as $filename) {
-
-                $content = new Content($filename);
-
+                $content = new Content();
                 try {
+                    $content->load($filename);
+                    $content->parse(new ContentParser($this->parser_params));
                     $content->setRoute($content_type);
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {
@@ -175,9 +190,11 @@ class ContentServiceProvider implements ServiceInterface
         $feed = [];
 
         foreach (glob($this->data_path . '/' . $route . '/*.md') as $filename) {
-            $content = new Content($filename);
-            $content->load();
+            $content = new Content();
+            $content->load($filename);
             $content->setRoute($route);
+            $parser = new ContentParser($this->parser_params);
+            $content->parse($parser);
             $feed[] = $content;
         }
 

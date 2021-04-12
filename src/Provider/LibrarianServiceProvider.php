@@ -50,8 +50,8 @@ class LibrarianServiceProvider implements ServiceInterface
             if ($app->config->has('site_about')) {
                 $route_about = $app->config->data_path . '/' . $app->config->site_about . '.md';
 
-                $content = new Content($route_about);
-                $content->load();
+                $content = new Content();
+                $content->load($route_about);
 
                 return $content->description;
             }

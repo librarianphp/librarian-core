@@ -4,43 +4,23 @@
 namespace Librarian;
 
 use Librarian\Exception\ContentNotFoundException;
+use Parsed\Content as Parsed;
 use DateTime;
 
 /**
  * Defines the Content Model
  * @package Miniweb
  */
-class Content
+class Content extends Parsed
 {
     /** @var string Path to content static file */
     public $path;
-
-    /** @var string Content Title */
-    public $title;
-
-    /** @var string Cover Image if any */
-    public $cover_image;
-
-    /** @var string Content Description */
-    public $description;
-
-    /** @var string List of tags*/
-    public $tag_list;
 
     /** @var string Linked list of tags */
     public $linked_tag_list;
 
     /** @var DateTime Published date/time */
     public $published;
-
-    /** @var array Front-matter key-pairs */
-    public $front_matter;
-
-    /** @var string Body of content in markdown */
-    public $body_markdown;
-
-    /** @var string Body of content in html */
-    public $body_html;
 
     /** @var string Content Slug */
     public $slug;
@@ -50,16 +30,6 @@ class Content
 
     /** @var string Link to this content */
     public $link;
-
-
-    /**
-     * Content constructor.
-     * @param null $path
-     */
-    public function __construct($path = null)
-    {
-        $this->path = $path;
-    }
 
     /**
      * Sets content type / route
@@ -79,40 +49,30 @@ class Content
     }
 
     /**
-     * @param array $parser_params
+     * @param string $file
      * @throws ContentNotFoundException
      */
-    public function load(array $parser_params = [])
+    public function load(string $file)
     {
+        $this->path = $file;
         if (!file_exists($this->path)) {
             throw new ContentNotFoundException('Content not found.');
         }
 
-        $source = file_get_contents($this->path);
-
-        $parser = new ContentParser($source, $parser_params);
-        $this->front_matter = $parser->getFrontMatter();
-
-        $this->title = $this->frontMatterGet('title', $this->getAlternateTitle());
-        $this->cover_image = $this->frontMatterGet('cover_image');
-        $this->published = $this->getDate();
-        $this->description = $this->frontMatterGet('description');
-        $this->tag_list = $this->frontMatterGet('tags');
-        $this->linked_tag_list = $this->getLinkedTagList();
-        $this->slug = $this->getSlug();
-        $this->link = $this->getLink();
-        $this->body_markdown = $parser->getMarkdownBody();
-        $this->body_html = $parser->getHtmlBody();
-
+        $this->raw = file_get_contents($this->path);
     }
 
     /**
-     * @param string $content
+     * @param string $path
      */
-    public function save($content)
+    public function save(string $path = null)
     {
-        $file = fopen($this->path, "w+");
-        fputs($file, $content);
+        if (!$path) {
+            $path = $this->path;
+        }
+
+        $file = fopen($path, "w+");
+        fputs($file, $this->raw);
         fclose($file);
     }
 
@@ -120,7 +80,7 @@ class Content
      * @return string
      * @throws \Exception
      */
-    public function getDate()
+    public function getDate(): string
     {
         $slug = $this->getSlug();
         $parts = explode('_', $slug, 2);
@@ -152,77 +112,10 @@ class Content
     }
 
     /**
-     * @return array
-     */
-    public function getTagsAsArray()
-    {
-        $tags = [];
-
-        if ($this->tag_list) {
-            $article_tags = explode(',', $this->tag_list);
-
-            foreach ($article_tags as $article_tag) {
-                $tag_name = trim(str_replace('#', '', $article_tag));
-
-                $tags[] = $tag_name;
-            }
-        }
-
-        return $tags;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLinkedTagList()
-    {
-        $list = "";
-        $count = 0;
-
-        if ($this->tag_list) {
-            $tags = $this->getTagsAsArray();
-
-            foreach ($tags as $article_tag) {
-                if ($count) {
-                    $list .= ", ";
-                }
-
-                $list .= "<a href='/tag/$article_tag' title='All posts under the $article_tag tag'>" . $article_tag . "</a>";
-                $count++;
-            }
-        }
-
-        return $list;
-    }
-
-    /**
      * @return string|string[]
      */
     public function getSlug()
     {
         return str_replace('.md', '', basename($this->path));
-    }
-
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function frontMatterHas($key)
-    {
-        return key_exists($key, $this->front_matter);
-    }
-
-    /**
-     * @param string $key
-     * @param string $default_value
-     * @return string|null
-     */
-    public function frontMatterGet($key, $default_value = null)
-    {
-        if ($this->frontMatterHas($key)) {
-            return $this->front_matter[$key] ?: $default_value;
-        }
-
-        return $default_value;
     }
 }
