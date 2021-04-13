@@ -3,7 +3,7 @@
 use Minicli\App;
 use Librarian\Provider\ContentServiceProvider;
 use Librarian\Provider\LibrarianServiceProvider;
-use Minicli\Miniweb\Provider\TwigServiceProvider;
+use Librarian\Provider\TwigServiceProvider;
 
 beforeEach(function () {
     $this->config = [

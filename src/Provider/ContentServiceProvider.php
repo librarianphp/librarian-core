@@ -72,7 +72,6 @@ class ContentServiceProvider implements ServiceInterface
 
             $parser = new ContentParser($this->parser_params);
             $content->parse($parser);
-
         } catch (ContentNotFoundException $e) {
             return null;
         }
@@ -85,7 +84,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param int $limit
      * @return ContentCollection
      */
-    public function fetchAll($start = 0, $limit = 20): ContentCollection
+    public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false): ContentCollection
     {
         $list = [];
         foreach (glob($this->data_path . '/*') as $route) {
@@ -94,7 +93,7 @@ class ContentServiceProvider implements ServiceInterface
                 $content = new Content();
                 try {
                     $content->load($filename);
-                    $content->parse(new ContentParser($this->parser_params));
+                    $content->parse(new ContentParser($this->parser_params), $parse_markdown);
                     $content->setRoute($content_type);
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {

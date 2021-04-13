@@ -27,7 +27,7 @@ it('parses the markdown content', function () {
     $app = new App($this->config);
     $app->addService('content', new ContentServiceProvider());
 
-    $posts = $app->content->fetchAll();
+    $posts = $app->content->fetchAll(0, 10, true);
 
     expect($posts->current()->title)->toEqual("Second Test - Testing Markdown Front Matter");
     expect($posts->current()->getSlug())->toEqual("test2");
