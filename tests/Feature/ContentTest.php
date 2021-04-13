@@ -39,6 +39,6 @@ it('loads content from request and parses devto format', function () {
 
     $content = $app->content->fetch($this->request);
 
-    expect($content->title)->toEqual("Devo Produzir Conteúdo em Português ou Inglês?");
+    expect($content->frontMatterGet('title'))->toEqual("Devo Produzir Conteúdo em Português ou Inglês?");
     expect($content->body_markdown)->toBeString();
 });

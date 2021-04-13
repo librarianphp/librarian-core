@@ -16,12 +16,6 @@ class Content extends Parsed
     /** @var string Path to content static file */
     public $path;
 
-    /** @var string Linked list of tags */
-    public $linked_tag_list;
-
-    /** @var DateTime Published date/time */
-    public $published;
-
     /** @var string Content Slug */
     public $slug;
 
@@ -30,6 +24,9 @@ class Content extends Parsed
 
     /** @var string Link to this content */
     public $link;
+
+    /** @var string default title based on file name */
+    public $default_title;
 
     /**
      * Sets content type / route
@@ -60,6 +57,8 @@ class Content extends Parsed
         }
 
         $this->raw = file_get_contents($this->path);
+        $this->slug = $this->getSlug();
+        $this->default_title = $this->getAlternateTitle();
     }
 
     /**

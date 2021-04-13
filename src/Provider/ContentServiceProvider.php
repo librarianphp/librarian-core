@@ -146,8 +146,8 @@ class ContentServiceProvider implements ServiceInterface
 
         /** @var Content $article */
         foreach ($content as $article) {
-            if ($article->tag_list) {
-                $article_tags = explode(',', $article->tag_list);
+            if ($article->frontMatterHas('tag_list')) {
+                $article_tags = explode(',', $article->frontMatterGet('tag_list'));
 
                 foreach ($article_tags as $article_tag) {
                     $tag_name = trim(str_replace('#', '', $article_tag));
