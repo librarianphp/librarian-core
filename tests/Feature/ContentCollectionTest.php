@@ -20,7 +20,7 @@ it('loads content from data path', function () {
     $posts = $app->content->fetchAll();
     expect($posts)->toBeInstanceOf(ContentCollection::class);
 
-    expect($posts->total())->toEqual(2);
+    expect($posts->total())->toEqual(3);
 });
 
 it('parses the markdown content', function () {

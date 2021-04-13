@@ -4,6 +4,7 @@ use Minicli\App;
 use Librarian\Provider\ContentServiceProvider;
 use Librarian\Provider\LibrarianServiceProvider;
 use Librarian\Provider\TwigServiceProvider;
+use Librarian\Request;
 
 beforeEach(function () {
     $this->config = [
@@ -12,6 +13,8 @@ beforeEach(function () {
         'data_path' => __DIR__ . '/../resources',
         'cache_path' => __DIR__ . '/../resources'
     ];
+
+    $this->request = new Request(['param1' => 'value1'], '/posts/test0');
 });
 
 it('sets up ContentServiceProvider within Minicli App', function () {
@@ -28,4 +31,14 @@ it('sets up LibrarianServiceProvider within Minicli App', function () {
     $app->addService('librarian', new LibrarianServiceProvider());
 
     expect($app->librarian)->toBeInstanceOf(LibrarianServiceProvider::class);
+});
+
+it('loads content from request and parses devto format', function () {
+    $app = new App($this->config);
+    $app->addService('content', new ContentServiceProvider());
+
+    $content = $app->content->fetch($this->request);
+
+    expect($content->title)->toEqual("Devo Produzir Conteúdo em Português ou Inglês?");
+    expect($content->body_markdown)->toBeString();
 });

@@ -3,7 +3,6 @@
 
 namespace Librarian;
 
-
 class Request
 {
     /** @var array */
@@ -86,5 +85,4 @@ class Request
     {
         return $this->slug;
     }
-
 }
