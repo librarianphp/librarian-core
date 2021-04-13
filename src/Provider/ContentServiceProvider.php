@@ -8,7 +8,7 @@ use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
 use Minicli\Minicache\FileCache;
-use Minicli\Miniweb\Request;
+use Librarian\Request;
 use Parsed\ContentParser;
 use Parsed\CustomTagParserInterface;
 
@@ -88,7 +88,6 @@ class ContentServiceProvider implements ServiceInterface
     public function fetchAll($start = 0, $limit = 20): ContentCollection
     {
         $list = [];
-        echo $this->data_path;
         foreach (glob($this->data_path . '/*') as $route) {
             $content_type = basename($route);
             foreach (glob($route . '/*.md') as $filename) {

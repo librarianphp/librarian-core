@@ -17,7 +17,7 @@
     "minicli/minicache": "^0.2.0",
     "erikaheidi/parsed": "^0.1.0",
     "minicli/minicli": "^2.2",
-    "minicli/miniweb": "^0.2.0"
+    "twig/twig": "^3.0"
   },
   "require-dev": {
     "pestphp/pest": "^1.0"

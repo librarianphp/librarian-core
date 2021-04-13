@@ -5,7 +5,7 @@ namespace Librarian\Provider;
 use Librarian\Content;
 use Minicli\App;
 use Minicli\ServiceInterface;
-use Minicli\Miniweb\Provider\TwigServiceProvider;
+use Librarian\Provider\TwigServiceProvider;
 use Twig\TwigFunction;
 
 class LibrarianServiceProvider implements ServiceInterface
