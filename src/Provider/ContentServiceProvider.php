@@ -105,8 +105,8 @@ class ContentServiceProvider implements ServiceInterface
         }
 
         $collection = new ContentCollection(array_reverse($list));
-        if (!$limit) {
-            return new $collection;
+        if ($limit === 0) {
+            return $collection;
         }
 
         return $collection->slice($start, $limit);
@@ -138,15 +138,17 @@ class ContentServiceProvider implements ServiceInterface
     /**
      * @return array|mixed
      */
-    public function fetchTagList()
+    public function fetchTagList(bool $cached = true)
     {
-        $cache = new FileCache($this->cache_path);
-        $cache_id = "full_tag_list";
+        if ($cached) {
+            $cache = new FileCache($this->cache_path);
+            $cache_id = "full_tag_list";
 
-        $cached_content = $cache->getCachedUnlessExpired($cache_id);
+            $cached_content = $cache->getCachedUnlessExpired($cache_id);
 
-        if ($cached_content !== null) {
-            return json_decode($cached_content, true);
+            if ($cached_content !== null) {
+                return json_decode($cached_content, true);
+            }
         }
 
         $content = $this->fetchAll(0, 0);
@@ -154,8 +156,8 @@ class ContentServiceProvider implements ServiceInterface
 
         /** @var Content $article */
         foreach ($content as $article) {
-            if ($article->frontMatterHas('tag_list')) {
-                $article_tags = explode(',', $article->frontMatterGet('tag_list'));
+            if ($article->frontMatterHas('tags')) {
+                $article_tags = explode(',', $article->frontMatterGet('tags'));
 
                 foreach ($article_tags as $article_tag) {
                     $tag_name = trim(str_replace('#', '', $article_tag));
@@ -165,8 +167,9 @@ class ContentServiceProvider implements ServiceInterface
             }
         }
 
-        //write to cache file
-        $cache->save(json_encode($tags), $cache_id);
+        if ($cached) {
+            $cache->save(json_encode($tags), $cache_id);
+        }
 
         return $tags;
     }

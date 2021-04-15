@@ -2,7 +2,7 @@
 title: Devo Produzir Conteúdo em Português ou Inglês?
 published: true
 description:
-tags: pt_br, discuss,
+tags: pt_br, discuss, test
 ---
 
 Tudo começou com um tweet criticando brasileiros "sem relevância no exterior" que compartilham coisas em inglês.
