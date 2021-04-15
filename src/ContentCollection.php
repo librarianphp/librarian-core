@@ -65,4 +65,15 @@ class ContentCollection implements Iterator
     {
         return count($this->content_list);
     }
+
+    /**
+     * Returns a new collection with a subset of this collection's items
+     * @param $start
+     * @param $limit
+     * @return ContentCollection
+     */
+    public function slice($start, $limit): ContentCollection
+    {
+        return new ContentCollection(array_slice($this->content_list, $start, $limit));
+    }
 }

@@ -104,12 +104,12 @@ class ContentServiceProvider implements ServiceInterface
             }
         }
 
-        $ordered_content = array_reverse($list);
+        $collection = new ContentCollection(array_reverse($list));
         if (!$limit) {
-            return new ContentCollection($ordered_content);
+            return new $collection;
         }
 
-        return new ContentCollection(array_slice($ordered_content, $start, $limit));
+        return $collection->slice($start, $limit);
     }
 
     public function fetchTotalPages($per_page = 20)
@@ -126,6 +126,13 @@ class ContentServiceProvider implements ServiceInterface
         $content = $this->fetchAll(0, 0);
 
         return (int) ceil($content->total() / $per_page);
+    }
+
+    public function fetchTagTotalPages($tag, $per_page = 20)
+    {
+        $collection = $this->fetchFromTag($tag);
+
+        return (int) ceil($collection->total() / $per_page);
     }
 
     /**
@@ -168,7 +175,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param $tag
      * @return mixed|null
      */
-    public function fetchFromTag($tag)
+    public function fetchFromTag($tag, int $start = 0, int $limit = 20)
     {
         $full_tag_list = $this->fetchTagList();
         $collection = new ContentCollection();
@@ -178,7 +185,11 @@ class ContentServiceProvider implements ServiceInterface
                 $collection->add($article);
             }
 
-            return $collection;
+            if (!$limit) {
+                return $collection;
+            }
+
+            return $collection->slice($start, $limit);
         }
 
         return null;
