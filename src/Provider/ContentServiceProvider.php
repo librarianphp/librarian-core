@@ -63,7 +63,7 @@ class ContentServiceProvider implements ServiceInterface
      */
     public function fetch(string $route, $parse_markdown = true)
     {
-        $request = new Request([], $route);
+        $request = new Request([], '/' . $route);
         $filename = $this->data_path . '/' . $request->getRoute() . '/' . $request->getSlug() . '.md';
         $content = new Content();
 

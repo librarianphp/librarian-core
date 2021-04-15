@@ -35,7 +35,7 @@ it('loads content from request and parses devto format', function () {
     $app = new App($this->config);
     $app->addService('content', new ContentServiceProvider());
 
-    $content = $app->content->fetch('/posts/test0');
+    $content = $app->content->fetch('posts/test0');
 
     expect($content->frontMatterGet('title'))->toEqual("Devo Produzir Conteúdo em Português ou Inglês?");
     expect($content->body_markdown)->toBeString();
