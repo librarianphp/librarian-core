@@ -57,12 +57,13 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param Request $request
+     * @param string $route
      * @return Content
      * @throws \Exception
      */
-    public function fetch(Request $request)
+    public function fetch(string $route, $parse_markdown = true)
     {
+        $request = new Request([], $route);
         $filename = $this->data_path . '/' . $request->getRoute() . '/' . $request->getSlug() . '.md';
         $content = new Content();
 
@@ -71,7 +72,7 @@ class ContentServiceProvider implements ServiceInterface
             $content->setRoute($request->getRoute());
 
             $parser = new ContentParser($this->parser_params);
-            $content->parse($parser);
+            $content->parse($parser, $parse_markdown);
         } catch (ContentNotFoundException $e) {
             return null;
         }
@@ -152,7 +153,7 @@ class ContentServiceProvider implements ServiceInterface
                 foreach ($article_tags as $article_tag) {
                     $tag_name = trim(str_replace('#', '', $article_tag));
 
-                    $tags[$tag_name][] = $article;
+                    $tags[$tag_name][] = $article->getLink();
                 }
             }
         }
@@ -170,9 +171,14 @@ class ContentServiceProvider implements ServiceInterface
     public function fetchFromTag($tag)
     {
         $full_tag_list = $this->fetchTagList();
-
+        $collection = new ContentCollection();
         if (key_exists($tag, $full_tag_list)) {
-            return $full_tag_list[$tag];
+            foreach ($full_tag_list[$tag] as $route) {
+                $article = $this->fetch($route);
+                $collection->add($article);
+            }
+
+            return $collection;
         }
 
         return null;
