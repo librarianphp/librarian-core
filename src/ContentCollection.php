@@ -13,7 +13,7 @@ use \Iterator;
 class ContentCollection implements Iterator
 {
     /** @var array */
-    protected $content_list;
+    protected $content_list = [];
 
     /** @var int */
     protected $current_position;
@@ -38,10 +38,7 @@ class ContentCollection implements Iterator
             return null;
         }
 
-        $content = $this->content_list[$this->current_position];
-        $content->load();
-
-        return $content;
+        return $this->content_list[$this->current_position];
     }
 
     public function next()
@@ -67,5 +64,16 @@ class ContentCollection implements Iterator
     public function total()
     {
         return count($this->content_list);
+    }
+
+    /**
+     * Returns a new collection with a subset of this collection's items
+     * @param $start
+     * @param $limit
+     * @return ContentCollection
+     */
+    public function slice($start, $limit): ContentCollection
+    {
+        return new ContentCollection(array_slice($this->content_list, $start, $limit));
     }
 }

@@ -8,7 +8,9 @@ use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
 use Minicli\Minicache\FileCache;
-use Minicli\Miniweb\Request;
+use Librarian\Request;
+use Parsed\ContentParser;
+use Parsed\CustomTagParserInterface;
 
 class ContentServiceProvider implements ServiceInterface
 {
@@ -20,6 +22,10 @@ class ContentServiceProvider implements ServiceInterface
 
     /** @var array */
     protected $parser_params = [];
+
+    /** @var ContentParser */
+    protected $parser;
+
     /**
      * @param App $app
      * @throws \Exception
@@ -41,23 +47,32 @@ class ContentServiceProvider implements ServiceInterface
         if ($app->config->has('parser_params')) {
             $this->parser_params = $app->config->parser_params;
         }
+
+        $this->parser = new ContentParser($this->parser_params);
+    }
+
+    public function registerTagParser(string $name, CustomTagParserInterface $tag_parser)
+    {
+        $this->parser->addCustomTagParser($name, $tag_parser);
     }
 
     /**
-     * @param Request $request
+     * @param string $route
      * @return Content
      * @throws \Exception
      */
-    public function fetch(Request $request)
+    public function fetch(string $route, $parse_markdown = true)
     {
+        $request = new Request([], '/' . $route);
         $filename = $this->data_path . '/' . $request->getRoute() . '/' . $request->getSlug() . '.md';
-
-        $content = new Content($filename);
+        $content = new Content();
 
         try {
-            $content->load($this->parser_params);
+            $content->load($filename);
             $content->setRoute($request->getRoute());
 
+            $parser = new ContentParser($this->parser_params);
+            $content->parse($parser, $parse_markdown);
         } catch (ContentNotFoundException $e) {
             return null;
         }
@@ -70,17 +85,16 @@ class ContentServiceProvider implements ServiceInterface
      * @param int $limit
      * @return ContentCollection
      */
-    public function fetchAll($start = 0, $limit = 20)
+    public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false): ContentCollection
     {
         $list = [];
-        foreach (glob($this->data_path . '/*', GLOB_ONLYDIR) as $route) {
+        foreach (glob($this->data_path . '/*') as $route) {
             $content_type = basename($route);
-
             foreach (glob($route . '/*.md') as $filename) {
-
-                $content = new Content($filename);
-
+                $content = new Content();
                 try {
+                    $content->load($filename);
+                    $content->parse(new ContentParser($this->parser_params), $parse_markdown);
                     $content->setRoute($content_type);
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {
@@ -90,12 +104,12 @@ class ContentServiceProvider implements ServiceInterface
             }
         }
 
-        $ordered_content = array_reverse($list);
-        if (!$limit) {
-            return new ContentCollection($ordered_content);
+        $collection = new ContentCollection(array_reverse($list));
+        if ($limit === 0) {
+            return $collection;
         }
 
-        return new ContentCollection(array_slice($ordered_content, $start, $limit));
+        return $collection->slice($start, $limit);
     }
 
     public function fetchTotalPages($per_page = 20)
@@ -114,18 +128,27 @@ class ContentServiceProvider implements ServiceInterface
         return (int) ceil($content->total() / $per_page);
     }
 
+    public function fetchTagTotalPages($tag, $per_page = 20)
+    {
+        $collection = $this->fetchFromTag($tag);
+
+        return (int) ceil($collection->total() / $per_page);
+    }
+
     /**
      * @return array|mixed
      */
-    public function fetchTagList()
+    public function fetchTagList(bool $cached = true)
     {
-        $cache = new FileCache($this->cache_path);
-        $cache_id = "full_tag_list";
+        if ($cached) {
+            $cache = new FileCache($this->cache_path);
+            $cache_id = "full_tag_list";
 
-        $cached_content = $cache->getCachedUnlessExpired($cache_id);
+            $cached_content = $cache->getCachedUnlessExpired($cache_id);
 
-        if ($cached_content !== null) {
-            return json_decode($cached_content, true);
+            if ($cached_content !== null) {
+                return json_decode($cached_content, true);
+            }
         }
 
         $content = $this->fetchAll(0, 0);
@@ -133,19 +156,20 @@ class ContentServiceProvider implements ServiceInterface
 
         /** @var Content $article */
         foreach ($content as $article) {
-            if ($article->tag_list) {
-                $article_tags = explode(',', $article->tag_list);
+            if ($article->frontMatterHas('tags')) {
+                $article_tags = explode(',', $article->frontMatterGet('tags'));
 
                 foreach ($article_tags as $article_tag) {
                     $tag_name = trim(str_replace('#', '', $article_tag));
 
-                    $tags[$tag_name][] = $article;
+                    $tags[$tag_name][] = $article->getLink();
                 }
             }
         }
 
-        //write to cache file
-        $cache->save(json_encode($tags), $cache_id);
+        if ($cached) {
+            $cache->save(json_encode($tags), $cache_id);
+        }
 
         return $tags;
     }
@@ -154,12 +178,21 @@ class ContentServiceProvider implements ServiceInterface
      * @param $tag
      * @return mixed|null
      */
-    public function fetchFromTag($tag)
+    public function fetchFromTag($tag, int $start = 0, int $limit = 20)
     {
         $full_tag_list = $this->fetchTagList();
-
+        $collection = new ContentCollection();
         if (key_exists($tag, $full_tag_list)) {
-            return $full_tag_list[$tag];
+            foreach ($full_tag_list[$tag] as $route) {
+                $article = $this->fetch($route);
+                $collection->add($article);
+            }
+
+            if (!$limit) {
+                return $collection;
+            }
+
+            return $collection->slice($start, $limit);
         }
 
         return null;
@@ -175,9 +208,11 @@ class ContentServiceProvider implements ServiceInterface
         $feed = [];
 
         foreach (glob($this->data_path . '/' . $route . '/*.md') as $filename) {
-            $content = new Content($filename);
-            $content->load();
+            $content = new Content();
+            $content->load($filename);
             $content->setRoute($route);
+            $parser = new ContentParser($this->parser_params);
+            $content->parse($parser);
             $feed[] = $content;
         }
 
