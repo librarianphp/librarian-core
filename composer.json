@@ -1,9 +1,9 @@
 {
-  "name": "minicli/librarian-core",
+  "name": "librarianphp/librarian-core",
   "type": "library",
   "description": "Core Librarian Package",
   "license": "MIT",
-  "homepage": "https://github.com/minicli/librarian-core",
+  "homepage": "https://github.com/librarianphp/librarian-core",
   "autoload": {
     "psr-4": {
       "Librarian\\": "src/"
