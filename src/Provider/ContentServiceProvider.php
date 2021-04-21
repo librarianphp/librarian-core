@@ -104,19 +104,7 @@ class ContentServiceProvider implements ServiceInterface
             }
         }
 
-        //order by slug by default
-        uasort($list, function (Content $content1, Content $content2) {
-            return ($content1->slug < $content2->slug) ? -1 : 1;
-        });
-
-        if ($orderBy === 'desc') {
-            $list = array_reverse($list);
-        }
-
-        if ($orderBy === 'rand') {
-            shuffle($list);
-        }
-
+        $list = $this->orderBy($list, $orderBy);
         $collection = new ContentCollection($list);
 
         if ($limit === 0) {
@@ -234,19 +222,7 @@ class ContentServiceProvider implements ServiceInterface
             }
         }
 
-        //order by slug by default
-        uasort($feed, function (Content $content1, Content $content2) {
-            return ($content1->slug < $content2->slug) ? -1 : 1;
-        });
-
-        if ($orderBy === 'desc') {
-            $feed = array_reverse($feed);
-        }
-
-        if ($orderBy === 'rand') {
-            shuffle($feed);
-        }
-
+        $feed = $this->orderBy($feed, $orderBy);
         $collection = new ContentCollection($feed);
 
         if ($limit === 0) {
@@ -254,5 +230,22 @@ class ContentServiceProvider implements ServiceInterface
         }
 
         return $collection->slice($start, $limit);
+    }
+
+    public function orderBy(array $content, $orderBy = 'desc')
+    {
+        uasort($content, function (Content $content1, Content $content2) {
+            return ($content1->slug < $content2->slug) ? -1 : 1;
+        });
+
+        if ($orderBy === 'desc') {
+            $content = array_reverse($content);
+        }
+
+        if ($orderBy === 'rand') {
+            shuffle($content);
+        }
+
+        return $content;
     }
 }
