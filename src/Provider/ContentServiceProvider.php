@@ -235,7 +235,7 @@ class ContentServiceProvider implements ServiceInterface
     public function orderBy(array $content, $orderBy = 'desc')
     {
         uasort($content, function (Content $content1, Content $content2) {
-            return ($content1->slug < $content2->slug) ? -1 : 1;
+            return (strtolower($content1->slug) < strtolower($content2->slug)) ? -1 : 1;
         });
 
         if ($orderBy === 'desc') {
