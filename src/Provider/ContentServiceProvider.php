@@ -94,7 +94,7 @@ class ContentServiceProvider implements ServiceInterface
                 $content = new Content();
                 try {
                     $content->load($filename);
-                    $content->parse(new ContentParser($this->parser_params), $parse_markdown);
+                    $content->parse($this->parser, $parse_markdown);
                     $content->setRoute($content_type);
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {
@@ -103,6 +103,12 @@ class ContentServiceProvider implements ServiceInterface
                 }
             }
         }
+
+        //order by slug by default
+        uasort($list, function (Content $content1, Content $content2) {
+            return ($content1->slug < $content2->slug) ? -1 : 1;
+        });
+
         if ($orderBy === 'desc') {
             $list = array_reverse($list);
         }
@@ -211,19 +217,42 @@ class ContentServiceProvider implements ServiceInterface
      * @return ContentCollection
      * @throws ContentNotFoundException
      */
-    public function fetchFrom($route)
+    public function fetchFrom($route, int $start = 0, int $limit = 20, bool $parse_markdown = false, $orderBy = 'desc')
     {
         $feed = [];
 
         foreach (glob($this->data_path . '/' . $route . '/*.md') as $filename) {
             $content = new Content();
-            $content->load($filename);
-            $content->setRoute($route);
-            $parser = new ContentParser($this->parser_params);
-            $content->parse($parser);
-            $feed[] = $content;
+            try {
+                $content->load($filename);
+                $content->parse(new ContentParser($this->parser_params), $parse_markdown);
+                $content->setRoute($route);
+                $feed[] = $content;
+            } catch (ContentNotFoundException $e) {
+                continue;
+            } catch (\Exception $e) {
+            }
         }
 
-        return new ContentCollection(array_reverse($feed));
+        //order by slug by default
+        uasort($feed, function (Content $content1, Content $content2) {
+            return ($content1->slug < $content2->slug) ? -1 : 1;
+        });
+
+        if ($orderBy === 'desc') {
+            $feed = array_reverse($feed);
+        }
+
+        if ($orderBy === 'rand') {
+            shuffle($feed);
+        }
+
+        $collection = new ContentCollection($feed);
+
+        if ($limit === 0) {
+            return $collection;
+        }
+
+        return $collection->slice($start, $limit);
     }
 }
