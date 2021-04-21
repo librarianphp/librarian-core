@@ -23,6 +23,34 @@ it('loads content from data path', function () {
     expect($posts->total())->toEqual(3);
 });
 
+it('loads content in alphabetical (asc) order', function () {
+    $app = new App($this->config);
+    $app->addService('content', new ContentServiceProvider());
+
+    $posts = $app->content->fetchAll(0, 10, false, 'asc');
+
+    expect($posts->current()->frontMatterGet('title'))->toEqual("Devo Produzir Conteúdo em Português ou Inglês?");
+});
+
+it('loads content in alphabetical (desc) order', function () {
+    $app = new App($this->config);
+    $app->addService('content', new ContentServiceProvider());
+
+    $posts = $app->content->fetchAll(0, 10, false, 'desc');
+
+    expect($posts->current()->frontMatterGet('title'))->toEqual("Second Test - Testing Markdown Front Matter");
+});
+
+it('loads content in random order', function () {
+    $app = new App($this->config);
+    $app->addService('content', new ContentServiceProvider());
+
+    $posts1 = $app->content->fetchAll(0, 2, false, 'rand');
+    $posts2 = $app->content->fetchAll(0, 2, false, 'rand');
+
+    expect($posts1->current())->not()->toEqual($posts2->current());
+});
+
 it('parses the markdown content', function () {
     $app = new App($this->config);
     $app->addService('content', new ContentServiceProvider());

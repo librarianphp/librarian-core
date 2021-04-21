@@ -85,7 +85,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param int $limit
      * @return ContentCollection
      */
-    public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false): ContentCollection
+    public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, $orderBy = 'desc'): ContentCollection
     {
         $list = [];
         foreach (glob($this->data_path . '/*') as $route) {
@@ -103,8 +103,16 @@ class ContentServiceProvider implements ServiceInterface
                 }
             }
         }
+        if ($orderBy === 'desc') {
+            $list = array_reverse($list);
+        }
 
-        $collection = new ContentCollection(array_reverse($list));
+        if ($orderBy === 'rand') {
+            shuffle($list);
+        }
+
+        $collection = new ContentCollection($list);
+
         if ($limit === 0) {
             return $collection;
         }
