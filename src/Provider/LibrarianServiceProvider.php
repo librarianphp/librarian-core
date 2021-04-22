@@ -64,5 +64,17 @@ class LibrarianServiceProvider implements ServiceInterface
             $content = $app->content;
             return $content->fetchTagList();
         }));
+
+        $twig->addFunction(new TwigFunction('content_types', function () use ($app) {
+            /** @var ContentServiceProvider $content */
+            $content = $app->content;
+            return $content->getContentTypes();
+        }));
+
+        $twig->addFunction(new TwigFunction('table_of_contents', function ($content_type) use ($app) {
+            /** @var ContentServiceProvider $content */
+            $content = $app->content;
+            return $content->fetchFrom($content_type, 0, 0, false, 'asc');
+        }));
     }
 }

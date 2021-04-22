@@ -43,7 +43,6 @@ class ContentServiceProvider implements ServiceInterface
         $this->data_path = $app->config->data_path;
         $this->cache_path = $app->config->cache_path;
 
-        //optional render parameters for the parsers, should be provided in the apps config
         if ($app->config->has('parser_params')) {
             $this->parser_params = $app->config->parser_params;
         }
@@ -58,8 +57,8 @@ class ContentServiceProvider implements ServiceInterface
 
     /**
      * @param string $route
+     * @param bool $parse_markdown
      * @return Content
-     * @throws \Exception
      */
     public function fetch(string $route, $parse_markdown = true)
     {
@@ -83,6 +82,8 @@ class ContentServiceProvider implements ServiceInterface
     /**
      * @param int $start
      * @param int $limit
+     * @param bool $parse_markdown
+     * @param string $orderBy
      * @return ContentCollection
      */
     public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, $orderBy = 'desc'): ContentCollection
@@ -114,6 +115,10 @@ class ContentServiceProvider implements ServiceInterface
         return $collection->slice($start, $limit);
     }
 
+    /**
+     * @param int $per_page
+     * @return int|mixed
+     */
     public function fetchTotalPages($per_page = 20)
     {
         $cache = new FileCache($this->cache_path);
@@ -130,6 +135,12 @@ class ContentServiceProvider implements ServiceInterface
         return (int) ceil($content->total() / $per_page);
     }
 
+    /**
+     * @param $tag
+     * @param int $per_page
+     * @return int
+     * @throws \Exception
+     */
     public function fetchTagTotalPages($tag, $per_page = 20)
     {
         $collection = $this->fetchFromTag($tag);
@@ -178,7 +189,10 @@ class ContentServiceProvider implements ServiceInterface
 
     /**
      * @param $tag
+     * @param int $start
+     * @param int $limit
      * @return mixed|null
+     * @throws \Exception
      */
     public function fetchFromTag($tag, int $start = 0, int $limit = 20)
     {
@@ -201,9 +215,25 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
+     * @return array
+     */
+    public function getContentTypes(): array
+    {
+        $content_types = [];
+        foreach (glob($this->data_path . '/*') as $route) {
+            $content_types[] = basename($route);
+        }
+
+        return $content_types;
+    }
+
+    /**
      * @param $route
+     * @param int $start
+     * @param int $limit
+     * @param bool $parse_markdown
+     * @param string $orderBy
      * @return ContentCollection
-     * @throws ContentNotFoundException
      */
     public function fetchFrom($route, int $start = 0, int $limit = 20, bool $parse_markdown = false, $orderBy = 'desc')
     {

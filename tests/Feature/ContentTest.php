@@ -47,3 +47,9 @@ it('loads tag list', function () {
     expect($tags)->toBeArray();
     expect(count($tags))->toBeGreaterThan(2);
 });
+
+it('loads content types', function () {
+    $types = $this->app->content->getContentTypes();
+
+    expect($types[0])->toEqual('posts');
+});

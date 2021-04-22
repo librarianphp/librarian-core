@@ -41,16 +41,6 @@ it('loads content in alphabetical (desc) order', function () {
     expect($posts->current()->frontMatterGet('title'))->toEqual("Second Test - Testing Markdown Front Matter");
 });
 
-it('loads content in random order', function () {
-    $app = new App($this->config);
-    $app->addService('content', new ContentServiceProvider());
-
-    $posts1 = $app->content->fetchAll(0, 2, false, 'rand');
-    $posts2 = $app->content->fetchAll(0, 2, false, 'rand');
-
-    expect($posts1->current())->not()->toEqual($posts2->current());
-});
-
 it('parses the markdown content', function () {
     $app = new App($this->config);
     $app->addService('content', new ContentServiceProvider());
