@@ -3,6 +3,7 @@
 namespace Librarian\Provider;
 
 use Librarian\Content;
+use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
 use Librarian\Provider\TwigServiceProvider;
@@ -51,7 +52,11 @@ class LibrarianServiceProvider implements ServiceInterface
                 $route_about = $app->config->data_path . '/' . $app->config->site_about . '.md';
 
                 $content = new Content();
-                $content->load($route_about);
+                try {
+                    $content->load($route_about);
+                } catch (ContentNotFoundException $e) {
+                    return $content->frontMatterGet('description');
+                }
 
                 return $content->frontMatterGet('description');
             }
