@@ -53,7 +53,7 @@ class LibrarianServiceProvider implements ServiceInterface
                 $content = new Content();
                 $content->load($route_about);
 
-                return $content->description;
+                return $content->frontMatterGet('description');
             }
 
             return $app->config->site_description ?: null;
@@ -69,6 +69,12 @@ class LibrarianServiceProvider implements ServiceInterface
             /** @var ContentServiceProvider $content */
             $content = $app->content;
             return $content->getContentTypes();
+        }));
+
+        $twig->addFunction(new TwigFunction('request_info', function () use ($app) {
+            /** @var RouterServiceProvider $router */
+            $router = $app->router;
+            return $router->getRequest();
         }));
 
         $twig->addFunction(new TwigFunction('table_of_contents', function ($content_type) use ($app) {
