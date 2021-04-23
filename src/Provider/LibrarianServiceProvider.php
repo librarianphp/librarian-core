@@ -49,13 +49,10 @@ class LibrarianServiceProvider implements ServiceInterface
 
         $twig->addFunction(new TwigFunction('site_about', function () use ($app) {
             if ($app->config->has('site_about')) {
-                $route_about = $app->config->data_path . '/' . $app->config->site_about . '.md';
-
-                $content = new Content();
                 try {
-                    $content->load($route_about);
+                    $content = $app->content->fetch($app->config->site_about);
                 } catch (ContentNotFoundException $e) {
-                    return $content->frontMatterGet('description');
+                    return $app->config->site_description;
                 }
 
                 return $content->frontMatterGet('description');
