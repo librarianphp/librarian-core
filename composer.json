@@ -15,7 +15,7 @@
     "erusev/parsedown-extra": "^0.8.1",
     "minicli/curly": "^0.1.2",
     "minicli/minicache": "^0.2.0",
-    "erikaheidi/parsed": "^0.2.0",
+    "erikaheidi/parsed": "^0.3.0",
     "minicli/minicli": "^2.2",
     "twig/twig": "^3.0"
   },
