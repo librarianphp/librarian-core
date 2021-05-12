@@ -43,6 +43,10 @@ class LibrarianServiceProvider implements ServiceInterface
             return $app->config->site_root ?: null;
         }));
 
+        $twig->addFunction(new TwigFunction('site_url', function () use ($app) {
+            return $app->config->site_url ?: null;
+        }));
+
         $twig->addFunction(new TwigFunction('social_links', function () use ($app) {
             return $app->config->social_links ?: null;
         }));
