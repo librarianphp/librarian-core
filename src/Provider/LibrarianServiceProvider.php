@@ -20,7 +20,7 @@ class LibrarianServiceProvider implements ServiceInterface
      * @param App $app
      * @throws \Exception
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         /** @var TwigServiceProvider $twig_service */
         $twig_service = $app->twig;

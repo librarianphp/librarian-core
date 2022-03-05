@@ -15,7 +15,7 @@
     "minicli/curly": "^0.1.2",
     "minicli/minicache": "^0.2.0",
     "librarianphp/parsed": "^0.3.0",
-    "minicli/minicli": "^2.2",
+    "minicli/minicli": "^3.0",
     "twig/twig": "^3.0"
   },
   "require-dev": {

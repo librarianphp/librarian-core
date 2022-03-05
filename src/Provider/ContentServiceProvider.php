@@ -30,7 +30,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param App $app
      * @throws \Exception
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         if (!$app->config->has('data_path')) {
             throw new \Exception("Missing Data Path.");

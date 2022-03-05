@@ -21,7 +21,7 @@ class TwigServiceProvider implements ServiceInterface
      * @param App $app
      * @throws \Exception
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         /** @var Config $config */
         $config = $app->config;

@@ -18,7 +18,7 @@ class RouterServiceProvider implements ServiceInterface
     /**
      * @param App $app
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         $this->app = $app;
         $this->request = new Request($_REQUEST, $_SERVER['REQUEST_URI']);

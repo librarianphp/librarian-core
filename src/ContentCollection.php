@@ -26,12 +26,12 @@ class ContentCollection implements Iterator
         }
     }
 
-    public function add(Content $content)
+    public function add(Content $content): void
     {
         $this->content_list[] = $content;
     }
 
-    public function current()
+    public function current(): mixed
     {
         if (!isset($this->content_list[$this->current_position])) {
             return null;
@@ -40,27 +40,27 @@ class ContentCollection implements Iterator
         return $this->content_list[$this->current_position];
     }
 
-    public function next()
+    public function next(): void
     {
         ++$this->current_position;
     }
 
-    public function key()
+    public function key(): mixed
     {
         return $this->current_position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->content_list[$this->current_position]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->current_position = 0;
     }
 
-    public function total()
+    public function total(): int
     {
         return count($this->content_list);
     }

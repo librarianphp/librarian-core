@@ -23,7 +23,7 @@ class DevtoServiceProvider implements ServiceInterface
      * @param App $app
      * @throws MissingConfigException
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         if (!$app->config->has('devto_username')) {
             throw new MissingConfigException('devto_username config not found.');
