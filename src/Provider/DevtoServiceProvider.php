@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Librarian\Provider;
 
 use Librarian\Content;
@@ -18,7 +17,7 @@ class DevtoServiceProvider implements ServiceInterface
     /** @var string local path to save static markdown files from dev.to content */
     protected $data_path;
 
-    static $API_ARTICLES_ENDPOINT = 'https://dev.to/api/articles';
+    public static $API_ARTICLES_ENDPOINT = 'https://dev.to/api/articles';
 
     /**
      * @param App $app

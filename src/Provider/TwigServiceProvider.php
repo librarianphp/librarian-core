@@ -1,6 +1,8 @@
 <?php
 
-namespace Librarian\Provider;;
+namespace Librarian\Provider;
+
+;
 
 use Minicli\App;
 use Minicli\Config;

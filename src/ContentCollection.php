@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Librarian;
 
-use \Iterator;
+use Iterator;
 
 /**
  * Class ContentList

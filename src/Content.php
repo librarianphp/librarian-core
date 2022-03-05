@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Librarian;
 
 use Librarian\Exception\ContentNotFoundException;
