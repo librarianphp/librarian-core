@@ -4,25 +4,26 @@ namespace Librarian;
 
 class Request
 {
-    /** @var array */
-    protected $params;
+    protected array $params;
 
-    /** @var string */
-    protected $request_uri;
+    protected string $request_uri;
 
-    /** @var array */
-    protected $request_info;
+    protected ?array $request_info;
 
-    /** @var string Full request path */
-    protected $path;
+    protected string $path;
 
-    /** @var string Requested route, such as "home", "index", "blog", etc - only 1 level is supported */
-    protected $route;
+    /**
+     * @var string Requested route, such as "home", "index", "blog", etc
+     * only 1 level is supported
+     */
+    protected string $route;
 
-    /** @var string Slug if present (request path minus route) */
-    protected $slug;
+    /**
+     * @var string Slug if present (request path minus route)
+     */
+    protected string $slug;
 
-    public function __construct(array $params, $request_uri)
+    public function __construct(array $params, string $request_uri)
     {
         $this->params = $params;
         $this->request_uri = $request_uri;
@@ -40,7 +41,7 @@ class Request
     /**
      * @return array
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
@@ -48,7 +49,7 @@ class Request
     /**
      * @return string
      */
-    public function getRequestUri()
+    public function getRequestUri(): string
     {
         return $this->request_uri;
     }
@@ -56,7 +57,7 @@ class Request
     /**
      * @return array
      */
-    public function getRequestInfo()
+    public function getRequestInfo(): ?array
     {
         return $this->request_info;
     }
@@ -64,7 +65,7 @@ class Request
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -72,7 +73,7 @@ class Request
     /**
      * @return string
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
@@ -80,7 +81,7 @@ class Request
     /**
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }

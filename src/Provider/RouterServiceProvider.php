@@ -10,10 +10,10 @@ use Minicli\ServiceInterface;
 class RouterServiceProvider implements ServiceInterface
 {
     /** @var App */
-    protected $app;
+    protected App $app;
 
     /** @var Request */
-    protected $request;
+    protected Request $request;
 
     /**
      * @param App $app
@@ -27,7 +27,7 @@ class RouterServiceProvider implements ServiceInterface
     /**
      * @return string
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->request->getRoute() ?: 'index';
     }
@@ -36,7 +36,7 @@ class RouterServiceProvider implements ServiceInterface
      * @return string
      * @throws RouteNotFoundException
      */
-    public function getCallableRoute()
+    public function getCallableRoute(): string
     {
         $route = $this->getRoute();
 
@@ -64,7 +64,7 @@ class RouterServiceProvider implements ServiceInterface
     /**
      * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }

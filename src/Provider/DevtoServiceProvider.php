@@ -12,12 +12,12 @@ use Minicli\Curly\Client;
 class DevtoServiceProvider implements ServiceInterface
 {
     /** @var string Dev.to username to pull articles from */
-    protected $username;
+    protected string $username;
 
     /** @var string local path to save static markdown files from dev.to content */
-    protected $data_path;
+    protected string $data_path;
 
-    public static $API_ARTICLES_ENDPOINT = 'https://dev.to/api/articles';
+    public static string $API_ARTICLES_ENDPOINT = 'https://dev.to/api/articles';
 
     /**
      * @param App $app
@@ -46,7 +46,7 @@ class DevtoServiceProvider implements ServiceInterface
      * Warning: Existing content will be overwritten.
      * @throws ApiException
      */
-    public function fetchAll()
+    public function fetchAll(): void
     {
         $crawler = new Client();
 

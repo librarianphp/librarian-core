@@ -15,16 +15,16 @@ use Parsed\CustomTagParserInterface;
 class ContentServiceProvider implements ServiceInterface
 {
     /** @var string */
-    protected $data_path;
+    protected string $data_path;
 
     /** @var string */
-    protected $cache_path;
+    protected string $cache_path;
 
     /** @var array */
-    protected $parser_params = [];
+    protected array $parser_params = [];
 
     /** @var ContentParser */
-    protected $parser;
+    protected ContentParser $parser;
 
     /**
      * @param App $app
@@ -50,7 +50,7 @@ class ContentServiceProvider implements ServiceInterface
         $this->parser = new ContentParser($this->parser_params);
     }
 
-    public function registerTagParser(string $name, CustomTagParserInterface $tag_parser)
+    public function registerTagParser(string $name, CustomTagParserInterface $tag_parser): void
     {
         $this->parser->addCustomTagParser($name, $tag_parser);
     }
@@ -60,7 +60,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param bool $parse_markdown
      * @return Content
      */
-    public function fetch(string $route, $parse_markdown = true)
+    public function fetch(string $route, bool $parse_markdown = true): ?Content
     {
         $request = new Request([], '/' . $route);
         $filename = $this->data_path . '/' . $request->getRoute() . '/' . $request->getSlug() . '.md';
@@ -85,7 +85,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param string $orderBy
      * @return ContentCollection
      */
-    public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, $orderBy = 'desc'): ContentCollection
+    public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ContentCollection
     {
         $list = [];
         foreach (glob($this->data_path . '/*') as $route) {
@@ -116,9 +116,9 @@ class ContentServiceProvider implements ServiceInterface
 
     /**
      * @param int $per_page
-     * @return int|mixed
+     * @return int
      */
-    public function fetchTotalPages($per_page = 20)
+    public function fetchTotalPages(int $per_page = 20): int
     {
         $cache = new FileCache($this->cache_path);
         $cache_id = "full_pagination";
@@ -135,12 +135,12 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param $tag
+     * @param string $tag
      * @param int $per_page
      * @return int
      * @throws \Exception
      */
-    public function fetchTagTotalPages($tag, $per_page = 20)
+    public function fetchTagTotalPages(string $tag, int $per_page = 20): int
     {
         $collection = $this->fetchFromTag($tag);
 
@@ -150,7 +150,7 @@ class ContentServiceProvider implements ServiceInterface
     /**
      * @return array|mixed
      */
-    public function fetchTagList(bool $cached = true)
+    public function fetchTagList(bool $cached = true): ?array
     {
         if ($cached) {
             $cache = new FileCache($this->cache_path);
@@ -187,13 +187,13 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param $tag
+     * @param string $tag
      * @param int $start
      * @param int $limit
      * @return mixed|null
      * @throws \Exception
      */
-    public function fetchFromTag($tag, int $start = 0, int $limit = 20)
+    public function fetchFromTag(string $tag, int $start = 0, int $limit = 20): ?ContentCollection
     {
         $full_tag_list = $this->fetchTagList();
         $collection = new ContentCollection();
@@ -227,14 +227,14 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param $route
+     * @param string $route
      * @param int $start
      * @param int $limit
      * @param bool $parse_markdown
      * @param string $orderBy
      * @return ContentCollection
      */
-    public function fetchFrom($route, int $start = 0, int $limit = 20, bool $parse_markdown = false, $orderBy = 'desc')
+    public function fetchFrom(string $route, int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ?ContentCollection
     {
         $feed = [];
 
@@ -261,7 +261,7 @@ class ContentServiceProvider implements ServiceInterface
         return $collection->slice($start, $limit);
     }
 
-    public function orderBy(array $content, $orderBy = 'desc')
+    public function orderBy(array $content, string $orderBy = 'desc'): array
     {
         uasort($content, function (Content $content1, Content $content2) {
             return (strtolower($content1->slug) < strtolower($content2->slug)) ? -1 : 1;

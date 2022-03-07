@@ -2,11 +2,9 @@
 
 namespace Librarian\Provider;
 
-use Librarian\Content;
 use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
-use Librarian\Provider\TwigServiceProvider;
 use Twig\TwigFunction;
 
 class LibrarianServiceProvider implements ServiceInterface

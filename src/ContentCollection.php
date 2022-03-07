@@ -11,13 +11,11 @@ use Iterator;
  */
 class ContentCollection implements Iterator
 {
-    /** @var array */
-    protected $content_list = [];
+    protected array $content_list = [];
 
-    /** @var int */
-    protected $current_position;
+    protected int $current_position;
 
-    public function __construct($content_list = [])
+    public function __construct(array $content_list = [])
     {
         $this->current_position = 0;
 

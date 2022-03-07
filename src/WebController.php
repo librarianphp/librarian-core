@@ -25,7 +25,7 @@ abstract class WebController implements ControllerInterface
      * Called before `run`.
      * @param App $app
      */
-    public function boot(App $app)
+    public function boot(App $app): void
     {
         $this->app = $app;
     }
@@ -33,7 +33,7 @@ abstract class WebController implements ControllerInterface
     /**
      * @param CommandCall $input
      */
-    public function run(CommandCall $input)
+    public function run(CommandCall $input): void
     {
         $this->input = $input;
         $this->handle();
@@ -43,7 +43,7 @@ abstract class WebController implements ControllerInterface
      * Optional method called when `run` is successfully finished.
      * @return void
      */
-    public function teardown()
+    public function teardown(): void
     {
         //
     }
@@ -51,7 +51,7 @@ abstract class WebController implements ControllerInterface
     /**
      * @return App
      */
-    public function getApp()
+    public function getApp(): App
     {
         return $this->app;
     }
@@ -59,7 +59,7 @@ abstract class WebController implements ControllerInterface
     /**
      * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         /** @var RouterServiceProvider $request */
         $router = $this->getApp()->router;
@@ -70,7 +70,7 @@ abstract class WebController implements ControllerInterface
     /**
      * @return Response
      */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return new Response();
     }
