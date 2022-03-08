@@ -49,7 +49,7 @@ class RouterServiceProvider implements ServiceInterface
                 throw new \Exception("Missing Static Data Path.");
             }
 
-            $data_path = $this->app->config->data->path;
+            $data_path = $this->app->config->data_path;
 
             if (is_dir($data_path . '/' . $route)) {
                 return 'content';
