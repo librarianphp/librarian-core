@@ -40,7 +40,7 @@ class RouterServiceProvider implements ServiceInterface
     {
         $route = $this->getRoute();
 
-        $controller = $this->app->command_registry->getCallableController('web', $route);
+        $controller = $this->app->commandRegistry->getCallableController('web', $route);
 
         if ($controller === null) {
             //no dedicated controller found. is it a static content from the data dir? if not, throw exception
@@ -49,7 +49,7 @@ class RouterServiceProvider implements ServiceInterface
                 throw new \Exception("Missing Static Data Path.");
             }
 
-            $data_path = $this->app->config->data_path;
+            $data_path = $this->app->config->data->path;
 
             if (is_dir($data_path . '/' . $route)) {
                 return 'content';
