@@ -13,19 +13,19 @@ use DateTime;
 class Content extends Parsed
 {
     /** @var string Path to content static file */
-    public $path;
+    public string $path;
 
     /** @var string Content Slug */
-    public $slug;
+    public string $slug;
 
     /** @var string Route for this Content */
-    public $route;
+    public string $route;
 
     /** @var string Link to this content */
-    public $link;
+    public string $link;
 
-    /** @var string default title based on file name */
-    public $default_title;
+    /** @var ?string default title based on file name */
+    public ?string $default_title;
 
     /**
      * Sets content type / route
@@ -39,7 +39,7 @@ class Content extends Parsed
     /**
      * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->route . '/' . $this->slug;
     }
@@ -48,7 +48,7 @@ class Content extends Parsed
      * @param string $file
      * @throws ContentNotFoundException
      */
-    public function load(string $file)
+    public function load(string $file): void
     {
         $this->path = $file;
         if (!file_exists($this->path)) {
@@ -61,9 +61,9 @@ class Content extends Parsed
     }
 
     /**
-     * @param string $path
+     * @param ?string $path
      */
-    public function save(string $path = null)
+    public function save(string $path = null): void
     {
         if (!$path) {
             $path = $this->path;
@@ -93,26 +93,24 @@ class Content extends Parsed
     }
 
     /**
-     * @return mixed|string|string[]
+     * @return ?string
      */
-    public function getAlternateTitle()
+    public function getAlternateTitle(): ?string
     {
         $slug = $this->getSlug();
 
         //remove date
         $parts = explode('_', $slug, 2);
 
-        $title = isset($parts[1]) ? $parts[1] : $slug;
+        $title = $parts[1] ?? $slug;
 
-        $title = ucfirst(str_replace('-', ' ', $title));
-
-        return $title;
+        return ucfirst(str_replace('-', ' ', $title));
     }
 
     /**
      * @return string|string[]
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return str_replace('.md', '', basename($this->path));
     }

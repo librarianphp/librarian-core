@@ -10,15 +10,15 @@ use Minicli\ServiceInterface;
 class RouterServiceProvider implements ServiceInterface
 {
     /** @var App */
-    protected $app;
+    protected App $app;
 
     /** @var Request */
-    protected $request;
+    protected Request $request;
 
     /**
      * @param App $app
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         $this->app = $app;
         $this->request = new Request($_REQUEST, $_SERVER['REQUEST_URI']);
@@ -27,7 +27,7 @@ class RouterServiceProvider implements ServiceInterface
     /**
      * @return string
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->request->getRoute() ?: 'index';
     }
@@ -36,11 +36,11 @@ class RouterServiceProvider implements ServiceInterface
      * @return string
      * @throws RouteNotFoundException
      */
-    public function getCallableRoute()
+    public function getCallableRoute(): string
     {
         $route = $this->getRoute();
 
-        $controller = $this->app->command_registry->getCallableController('web', $route);
+        $controller = $this->app->commandRegistry->getCallableController('web', $route);
 
         if ($controller === null) {
             //no dedicated controller found. is it a static content from the data dir? if not, throw exception
@@ -64,7 +64,7 @@ class RouterServiceProvider implements ServiceInterface
     /**
      * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }

@@ -4,22 +4,22 @@ namespace Librarian;
 
 class Response
 {
-    protected $content;
+    protected ?string $content;
 
-    public function __construct($content = null)
+    public function __construct(?string $content = null)
     {
         $this->content = $content;
     }
 
-    public function output()
+    public function output(): void
     {
         echo $this->content;
     }
 
     /**
-     * @return null
+     * @return null|string
      */
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -27,18 +27,18 @@ class Response
     /**
      * @param null $content
      */
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }
 
-    public static function redirect($url, $statusCode = 303)
+    public static function redirect($url, $statusCode = 303): void
     {
         header('Location: ' . $url, true, $statusCode);
         exit;
     }
 
-    public static function notfound()
+    public static function notfound(): void
     {
         header("HTTP/1.0 404 Not Found");
         exit;

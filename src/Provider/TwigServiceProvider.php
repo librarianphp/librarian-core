@@ -2,10 +2,11 @@
 
 namespace Librarian\Provider;
 
-;
-
 use Minicli\App;
 use Minicli\Config;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 use Minicli\ServiceInterface;
 use Twig\Environment as TwigEnvironment;
@@ -13,15 +14,15 @@ use Twig\Environment as TwigEnvironment;
 class TwigServiceProvider implements ServiceInterface
 {
     /** @var string */
-    protected $templates_path;
+    protected string $templates_path;
     /** @var TwigEnvironment */
-    protected $twig;
+    protected TwigEnvironment $twig;
 
     /**
      * @param App $app
      * @throws \Exception
      */
-    public function load(App $app)
+    public function load(App $app): void
     {
         /** @var Config $config */
         $config = $app->config;
@@ -45,7 +46,7 @@ class TwigServiceProvider implements ServiceInterface
     /**
      * @return TwigEnvironment
      */
-    public function getTwig()
+    public function getTwig(): TwigEnvironment
     {
         return $this->twig;
     }
@@ -53,7 +54,7 @@ class TwigServiceProvider implements ServiceInterface
     /**
      * @param string $path
      */
-    public function setTemplatesPath($path)
+    public function setTemplatesPath(string $path): void
     {
         $this->templates_path = $path;
     }
@@ -61,7 +62,7 @@ class TwigServiceProvider implements ServiceInterface
     /**
      * @return string
      */
-    public function getTemplatesPath()
+    public function getTemplatesPath(): string
     {
         return $this->templates_path;
     }
@@ -70,11 +71,11 @@ class TwigServiceProvider implements ServiceInterface
      * @param $template_file
      * @param array $data
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function render($template_file, array $data)
+    public function render($template_file, array $data): string
     {
         $template = $this->twig->load($template_file);
         return $template->render($data);
