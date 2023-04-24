@@ -20,7 +20,11 @@
   },
   "require-dev": {
     "pestphp/pest": "^1.0",
-    "friendsofphp/php-cs-fixer": "^3.3.0"
+    "friendsofphp/php-cs-fixer": "^3.16"
+  },
+  "scripts": {
+    "test" : ["pest"],
+    "csfix": ["php-cs-fixer fix"]
   },
   "config": {
     "allow-plugins": {
