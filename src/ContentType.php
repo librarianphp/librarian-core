@@ -9,8 +9,8 @@ class ContentType
     public string $slug;
     public string $contentDir;
     public string $title;
-    public string $description;
-    public string $index;
+    public string $description = "";
+    public int $index = 100;
 
     public function __toString(): string
     {
@@ -23,6 +23,7 @@ class ContentType
     public function __construct(string $slug, string $contentDir)
     {
         $this->slug = $slug;
+        $this->title = ucfirst($slug);
         $this->contentDir = $contentDir;
         $this->loadMetadata();
     }
@@ -38,7 +39,7 @@ class ContentType
             $metadata->parse(new ContentParser());
             $this->title = $metadata->frontMatterGet('title') ?? ucfirst($this->slug);
             $this->description = $metadata->frontMatterGet('description') ?? "";
-            $this->index = $metadata->frontMatterGet('index') ?? 10;
+            $this->index = (int) $metadata->frontMatterGet('index') ?? 10;
         }
     }
 }
