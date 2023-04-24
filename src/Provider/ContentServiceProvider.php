@@ -4,6 +4,7 @@ namespace Librarian\Provider;
 
 use Librarian\Content;
 use Librarian\ContentCollection;
+use Librarian\ContentType;
 use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
@@ -213,27 +214,25 @@ class ContentServiceProvider implements ServiceInterface
         return null;
     }
 
-    /**
-     * @return array
-     */
     public function getContentTypes(): array
     {
-        $content_types = [];
-        foreach (glob($this->data_path . '/*') as $route) {
-            $content_types[] = basename($route);
+        $contentTypes = [];
+        $order = [];
+        foreach (glob($this->data_path . '/*', GLOB_ONLYDIR) as $route) {
+            $content = new ContentType(basename($route), $this->data_path);
+            $contentTypes[$content->slug] = $content;
+            $order[$content->slug] = $content->index;
         }
 
-        return $content_types;
+        asort($order, SORT_NUMERIC);
+        $orderedContent = [];
+        foreach ($order as $slug => $index) {
+            $orderedContent[] = $contentTypes[$slug];
+        }
+
+        return $orderedContent;
     }
 
-    /**
-     * @param string $route
-     * @param int $start
-     * @param int $limit
-     * @param bool $parse_markdown
-     * @param string $orderBy
-     * @return ContentCollection
-     */
     public function fetchFrom(string $route, int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ?ContentCollection
     {
         $feed = [];
