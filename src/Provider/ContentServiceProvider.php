@@ -266,6 +266,21 @@ class ContentServiceProvider implements ServiceInterface
             return (strtolower($content1->slug) < strtolower($content2->slug)) ? -1 : 1;
         });
 
+        if ($orderBy === 'index') {
+            $order = [];
+            $contentCollection = [];
+            /** @var Content $item */
+            foreach ($content as $item) {
+                $order[$item->slug] = $item->frontMatterGet('index') ?? 100;
+                $contentCollection[$item->slug] = $item;
+            }
+            asort($order, SORT_NUMERIC);
+            $content = [];
+            foreach ($order as $slug => $index) {
+                $content[] = $contentCollection[$slug];
+            }
+        }
+
         if ($orderBy === 'desc') {
             $content = array_reverse($content);
         }
