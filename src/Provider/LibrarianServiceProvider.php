@@ -57,11 +57,10 @@ class LibrarianServiceProvider implements ServiceInterface
             if ($app->config->has('site_about')) {
                 try {
                     $content = $app->content->fetch($app->config->site_about);
+                    return $content->frontMatterGet('description');
                 } catch (ContentNotFoundException $e) {
                     return $app->config->site_description;
                 }
-
-                return $content->frontMatterGet('description');
             }
 
             return $app->config->site_description ?: null;
@@ -88,7 +87,7 @@ class LibrarianServiceProvider implements ServiceInterface
         $twig->addFunction(new TwigFunction('table_of_contents', function ($content_type) use ($app) {
             /** @var ContentServiceProvider $content */
             $content = $app->content;
-            return $content->fetchFrom($content_type, 0, 0, false, 'asc');
+            return $content->fetchFrom($content_type, 0, 0, false, 'index');
         }));
     }
 }
