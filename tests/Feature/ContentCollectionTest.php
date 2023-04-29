@@ -45,6 +45,15 @@ it('orders content based on front matter index (index)', function () {
     $app = new App($this->config);
     $app->addService('content', new ContentServiceProvider());
 
+    $posts = $app->content->fetchAll(0, 10, false, 'index');
+
+    expect($posts->current()->frontMatterGet('title'))->toEqual("Testing Markdown Front Matter");
+});
+
+it('orders content type posts based on front matter index (index)', function () {
+    $app = new App($this->config);
+    $app->addService('content', new ContentServiceProvider());
+
     $posts = $app->content->fetchFrom('posts', 0, 10, false, 'index');
 
     expect($posts->current()->frontMatterGet('title'))->toEqual("Testing Markdown Front Matter");

@@ -57,7 +57,9 @@ class LibrarianServiceProvider implements ServiceInterface
             if ($app->config->has('site_about')) {
                 try {
                     $content = $app->content->fetch($app->config->site_about);
-                    return $content->frontMatterGet('description');
+                    if ($content) {
+                        return $content->frontMatterGet('description');
+                    }
                 } catch (ContentNotFoundException $e) {
                     return $app->config->site_description;
                 }
