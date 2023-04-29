@@ -89,14 +89,16 @@ class ContentServiceProvider implements ServiceInterface
     public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ContentCollection
     {
         $list = [];
-        foreach (glob($this->data_path . '/*') as $route) {
-            $content_type = basename($route);
-            foreach (glob($route . '/*.md') as $filename) {
+        $contentTypes = $this->getContentTypes();
+
+        /** @var ContentType $contentType */
+        foreach ($contentTypes as $contentType) {
+            foreach (glob($contentType->contentDir . '/' . $contentType->slug . '/*.md') as $filename) {
                 $content = new Content();
                 try {
                     $content->load($filename);
                     $content->parse($this->parser, $parse_markdown);
-                    $content->setRoute($content_type);
+                    $content->setRoute($contentType->slug);
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {
                     continue;
