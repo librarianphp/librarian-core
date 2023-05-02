@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8f300fcf007446dfc2569c241d823fc",
+    "content-hash": "b246fdcff9d40ac8d0216bea83c2c539",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -405,26 +405,25 @@
         },
         {
             "name": "minicli/minicli",
-            "version": "3.2.1",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/minicli/minicli.git",
-                "reference": "2d31b303461d0ec1f8c6d0be00f8b26be8766fbe"
+                "reference": "d3a83a3e7b31c1f0a200f1c19da9dd02b3a1fd85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minicli/minicli/zipball/2d31b303461d0ec1f8c6d0be00f8b26be8766fbe",
-                "reference": "2d31b303461d0ec1f8c6d0be00f8b26be8766fbe",
+                "url": "https://api.github.com/repos/minicli/minicli/zipball/d3a83a3e7b31c1f0a200f1c19da9dd02b3a1fd85",
+                "reference": "d3a83a3e7b31c1f0a200f1c19da9dd02b3a1fd85",
                 "shasum": ""
             },
             "require": {
                 "ext-readline": "*",
-                "php": ">=8"
+                "php": ">=8.1"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.5",
-                "pestphp/pest": "^1.0",
-                "phpunit/phpunit": "^9.0"
+                "pestphp/pest": "^2.5"
             },
             "type": "library",
             "autoload": {
@@ -444,7 +443,7 @@
             ],
             "support": {
                 "issues": "https://github.com/minicli/minicli/issues",
-                "source": "https://github.com/minicli/minicli/tree/3.2.1"
+                "source": "https://github.com/minicli/minicli/tree/4.0.0"
             },
             "funding": [
                 {
@@ -452,7 +451,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-23T09:04:22+00:00"
+            "time": "2023-04-30T08:19:16+00:00"
         },
         {
             "name": "minicli/stencil",
@@ -4761,6 +4760,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
+        "php": ">=8.1",
         "ext-curl": "*",
         "ext-json": "*"
     },
