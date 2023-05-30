@@ -10,10 +10,10 @@ use Librarian\Provider\RouterServiceProvider;
 abstract class WebController implements ControllerInterface
 {
     /** @var  App */
-    protected $app;
+    protected App $app;
 
     /** @var  CommandCall */
-    protected $input;
+    protected CommandCall $input;
 
     /**
      * Command Logic.

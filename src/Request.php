@@ -55,7 +55,7 @@ class Request
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getRequestInfo(): ?array
     {

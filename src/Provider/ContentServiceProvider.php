@@ -2,6 +2,7 @@
 
 namespace Librarian\Provider;
 
+use Exception;
 use Librarian\Content;
 use Librarian\ContentCollection;
 use Librarian\ContentType;
@@ -29,16 +30,16 @@ class ContentServiceProvider implements ServiceInterface
 
     /**
      * @param App $app
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(App $app): void
     {
         if (!$app->config->has('data_path')) {
-            throw new \Exception("Missing Data Path.");
+            throw new Exception("Missing Data Path.");
         }
 
         if (!$app->config->has('cache_path')) {
-            throw new \Exception("Missing Cache Path.");
+            throw new Exception("Missing Cache Path.");
         }
 
         $this->data_path = $app->config->data_path;
@@ -59,7 +60,7 @@ class ContentServiceProvider implements ServiceInterface
     /**
      * @param string $route
      * @param bool $parse_markdown
-     * @return Content
+     * @return Content|null
      */
     public function fetch(string $route, bool $parse_markdown = true): ?Content
     {
@@ -102,7 +103,7 @@ class ContentServiceProvider implements ServiceInterface
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {
                     continue;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
             }
         }
@@ -141,7 +142,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param string $tag
      * @param int $per_page
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchTagTotalPages(string $tag, int $per_page = 20): int
     {
@@ -194,7 +195,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param int $start
      * @param int $limit
      * @return mixed|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchFromTag(string $tag, int $start = 0, int $limit = 20): ?ContentCollection
     {
@@ -216,6 +217,9 @@ class ContentServiceProvider implements ServiceInterface
         return null;
     }
 
+    /**
+     * @throws ContentNotFoundException
+     */
     public function getContentTypes(): array
     {
         $contentTypes = [];
@@ -248,7 +252,7 @@ class ContentServiceProvider implements ServiceInterface
                 $feed[] = $content;
             } catch (ContentNotFoundException $e) {
                 continue;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
 
