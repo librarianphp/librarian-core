@@ -2,8 +2,8 @@
 
 namespace Librarian\Provider;
 
+use Exception;
 use Minicli\App;
-use Minicli\Config;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -20,15 +20,14 @@ class TwigServiceProvider implements ServiceInterface
 
     /**
      * @param App $app
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(App $app): void
     {
-        /** @var Config $config */
         $config = $app->config;
 
         if (!$config->has('templates_path')) {
-            throw new \Exception("Missing Templates Path.");
+            throw new Exception("Missing Templates Path.");
         }
 
         $this->setTemplatesPath($config->templates_path);

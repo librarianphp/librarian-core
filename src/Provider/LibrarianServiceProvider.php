@@ -2,6 +2,7 @@
 
 namespace Librarian\Provider;
 
+use Exception;
 use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
@@ -16,7 +17,7 @@ class LibrarianServiceProvider implements ServiceInterface
 
     /**
      * @param App $app
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(App $app): void
     {
@@ -24,7 +25,7 @@ class LibrarianServiceProvider implements ServiceInterface
         $twig_service = $app->twig;
 
         if ($twig_service === null) {
-            throw new \Exception("Unable to find Twig Service Provider. Make sure it is registered first.");
+            throw new Exception("Unable to find Twig Service Provider. Make sure it is registered first.");
         }
 
         $twig = $twig_service->getTwig();

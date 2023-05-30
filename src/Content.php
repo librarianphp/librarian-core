@@ -108,7 +108,7 @@ class Content extends Parsed
     }
 
     /**
-     * @return string|string[]
+     * @return string
      */
     public function getSlug(): string
     {
