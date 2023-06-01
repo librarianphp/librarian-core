@@ -70,7 +70,7 @@ class ContentServiceProvider implements ServiceInterface
 
         try {
             $content->load($filename);
-            $content->setRoute($request->getRoute());
+            $content->setContentType($this->getContentType($request->getRoute()));
 
             $content->parse($this->parser, $parse_markdown);
         } catch (ContentNotFoundException $e) {
@@ -100,7 +100,7 @@ class ContentServiceProvider implements ServiceInterface
                 try {
                     $content->load($filename);
                     $content->parse($this->parser, $parse_markdown);
-                    $content->setRoute($contentType->slug);
+                    $content->setContentType($contentType);
                     $list[] = $content;
                 } catch (ContentNotFoundException $e) {
                     continue;
@@ -258,7 +258,7 @@ class ContentServiceProvider implements ServiceInterface
             try {
                 $content->load($filename);
                 $content->parse($this->parser, $parse_markdown);
-                $content->setRoute($contentType->slug);
+                $content->setContentType($contentType);
                 $feed[] = $content;
             } catch (ContentNotFoundException $e) {
                 continue;

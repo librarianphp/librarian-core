@@ -18,8 +18,11 @@ class Content extends Parsed
     /** @var string Content Slug */
     public string $slug;
 
-    /** @var string Route for this Content */
+    /** @var string Route */
     public string $route;
+
+    /** @var ContentType Content Type */
+    public ContentType $contentType;
 
     /** @var string Link to this content */
     public string $link;
@@ -29,13 +32,14 @@ class Content extends Parsed
 
     /**
      * Sets content type / route
-     * @param string $route
+     * @param ContentType $contentType
      */
-    public function setRoute($route)
+    public function setContentType(ContentType $contentType): void
     {
-        $this->route = $route;
+        $this->contentType = $contentType;
+        $this->route = $contentType->slug;
     }
-
+    
     /**
      * @return string
      */
