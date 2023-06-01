@@ -43,7 +43,7 @@ class ContentCollection implements Iterator
         ++$this->current_position;
     }
 
-    public function key(): mixed
+    public function key(): int
     {
         return $this->current_position;
     }

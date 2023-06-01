@@ -1,5 +1,6 @@
 <?php
 
+use Librarian\ContentType;
 use Minicli\App;
 use Librarian\Provider\ContentServiceProvider;
 use Librarian\ContentCollection;
@@ -53,8 +54,9 @@ it('orders content based on front matter index (index)', function () {
 it('orders content type posts based on front matter index (index)', function () {
     $app = new App($this->config);
     $app->addService('content', new ContentServiceProvider());
-
-    $posts = $app->content->fetchFrom('posts', 0, 10, false, 'index');
+    $cType = $app->content->getContentType('posts');
+    expect($cType)->toBeInstanceOf(ContentType::class);
+    $posts = $app->content->fetchFrom($cType, 0, 10, false, 'index');
 
     expect($posts->current()->frontMatterGet('title'))->toEqual("Testing Markdown Front Matter");
 });

@@ -86,6 +86,7 @@ class ContentServiceProvider implements ServiceInterface
      * @param bool $parse_markdown
      * @param string $orderBy
      * @return ContentCollection
+     * @throws ContentNotFoundException
      */
     public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ContentCollection
     {
@@ -121,6 +122,7 @@ class ContentServiceProvider implements ServiceInterface
     /**
      * @param int $per_page
      * @return int
+     * @throws ContentNotFoundException
      */
     public function fetchTotalPages(int $per_page = 20): int
     {
@@ -153,6 +155,7 @@ class ContentServiceProvider implements ServiceInterface
 
     /**
      * @return array|mixed
+     * @throws ContentNotFoundException
      */
     public function fetchTagList(bool $cached = true): ?array
     {
@@ -239,16 +242,23 @@ class ContentServiceProvider implements ServiceInterface
         return $orderedContent;
     }
 
-    public function fetchFrom(string $route, int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ?ContentCollection
+    /**
+     * @throws ContentNotFoundException
+     */
+    public function getContentType(string $contentType): ContentType
+    {
+        return new ContentType($contentType, $this->data_path);
+    }
+    public function fetchFrom(ContentType $contentType, int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ?ContentCollection
     {
         $feed = [];
 
-        foreach (glob($this->data_path . '/' . $route . '/*.md') as $filename) {
+        foreach (glob($this->data_path . '/' . $contentType->slug . '/*.md') as $filename) {
             $content = new Content();
             try {
                 $content->load($filename);
                 $content->parse($this->parser, $parse_markdown);
-                $content->setRoute($route);
+                $content->setRoute($contentType->slug);
                 $feed[] = $content;
             } catch (ContentNotFoundException $e) {
                 continue;
