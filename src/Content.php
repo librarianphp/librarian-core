@@ -39,7 +39,7 @@ class Content extends Parsed
         $this->contentType = $contentType;
         $this->route = $contentType->slug;
     }
-    
+
     /**
      * @return string
      */

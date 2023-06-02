@@ -19,15 +19,17 @@ abstract class WebController implements ControllerInterface
      * Command Logic.
      * @return void
      */
-    abstract public function handle();
+    abstract public function handle(): void;
 
     /**
      * Called before `run`.
      * @param App $app
+     * @param CommandCall $input
      */
-    public function boot(App $app): void
+    public function boot(App $app, CommandCall $input): void
     {
         $this->app = $app;
+        $this->input = $input;
     }
 
     /**
