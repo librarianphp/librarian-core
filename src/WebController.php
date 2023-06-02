@@ -76,4 +76,9 @@ abstract class WebController implements ControllerInterface
     {
         return new Response();
     }
+
+    public function required(): array
+    {
+        return [];
+    }
 }
