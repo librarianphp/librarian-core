@@ -34,7 +34,7 @@ it('sets up LibrarianServiceProvider within Minicli App', function () {
 
 it('loads content from request and parses front matter', function () {
     $content = $this->app->content->fetch('posts/test0');
-    expect($content->frontMatterGet('title'))->toEqual('Devo Produzir Conteúdo em Português ou Inglês?')
+    expect($content->frontMatterGet('title'))->toBe('Devo Produzir Conteúdo em Português ou Inglês?')
         ->and($content->body_markdown)->toBeString();
 });
 
@@ -54,5 +54,5 @@ it('loads content types respecting index order', function () {
     $types = $this->app->content->getContentTypes();
     $ctype = $types[0];
     expect($ctype)->toBeInstanceOf(ContentType::class)
-        ->and($ctype->title)->toEqual('Blog Posts');
+        ->and($ctype->title)->toBe('Blog Posts');
 });

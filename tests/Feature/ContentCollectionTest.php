@@ -22,7 +22,7 @@ it('loads content from data path', function () {
 
     $posts = $app->content->fetchAll();
     expect($posts)->toBeInstanceOf(ContentCollection::class)
-        ->and($posts->total())->toEqual(5);
+        ->and($posts->total())->toBe(5);
 
 });
 
@@ -32,7 +32,7 @@ it('orders content in alphabetical (asc) order', function () {
 
     $posts = $app->content->fetchAll(0, 10, false, 'asc');
 
-    expect($posts->current()->frontMatterGet('title'))->toEqual('Devo Produzir Conteúdo em Português ou Inglês?');
+    expect($posts->current()->frontMatterGet('title'))->toBe('Devo Produzir Conteúdo em Português ou Inglês?');
 });
 
 it('orders content in alphabetical (desc) order', function () {
@@ -41,7 +41,7 @@ it('orders content in alphabetical (desc) order', function () {
 
     $posts = $app->content->fetchAll(0, 10, false, 'desc');
 
-    expect($posts->current()->frontMatterGet('title'))->toEqual('Second Test - Testing Markdown Front Matter');
+    expect($posts->current()->frontMatterGet('title'))->toBe('Second Test - Testing Markdown Front Matter');
 });
 
 it('orders content based on front matter index (index)', function () {
@@ -50,7 +50,7 @@ it('orders content based on front matter index (index)', function () {
 
     $posts = $app->content->fetchAll(0, 10, false, 'index');
 
-    expect($posts->current()->frontMatterGet('title'))->toEqual('Testing Markdown Front Matter');
+    expect($posts->current()->frontMatterGet('title'))->toBe('Testing Markdown Front Matter');
 });
 
 it('orders content type posts based on front matter index (index)', function () {
@@ -60,7 +60,7 @@ it('orders content type posts based on front matter index (index)', function () 
     expect($cType)->toBeInstanceOf(ContentType::class);
     $posts = $app->content->fetchFrom($cType, 0, 10, false, 'index');
 
-    expect($posts->current()->frontMatterGet('title'))->toEqual('Testing Markdown Front Matter');
+    expect($posts->current()->frontMatterGet('title'))->toBe('Testing Markdown Front Matter');
 });
 
 it('parses the markdown content', function () {
@@ -69,7 +69,7 @@ it('parses the markdown content', function () {
 
     $posts = $app->content->fetchAll(0, 10, true);
 
-    expect($posts->current()->frontMatterGet('title'))->toEqual('Second Test - Testing Markdown Front Matter')
-        ->and($posts->current()->getSlug())->toEqual('test2')
-        ->and($posts->current()->body_html)->toEqual("<h2>Testing</h2>\n");
+    expect($posts->current()->frontMatterGet('title'))->toBe('Second Test - Testing Markdown Front Matter')
+        ->and($posts->current()->getSlug())->toBe('test2')
+        ->and($posts->current()->body_html)->toBe("<h2>Testing</h2>\n");
 });
