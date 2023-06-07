@@ -20,8 +20,8 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: Run test suite
-      run: ./vendor/bin/pest
+    - name: Check code style
+      run: composer test:lint
 
-    - name: Run php-cs-fixer
-      run: ./vendor/bin/php-cs-fixer fix
+    - name: Run test suite
+      run: composer test:unit

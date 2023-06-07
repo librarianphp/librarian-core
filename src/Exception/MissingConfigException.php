@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian\Exception;
 
-class MissingConfigException extends \Exception
+use Exception;
+
+class MissingConfigException extends Exception
 {
 }
