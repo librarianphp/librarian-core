@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian;
 
+use DateTime;
+use Exception;
 use Librarian\Exception\ContentNotFoundException;
 use Parsed\Content as Parsed;
-use DateTime;
 
 /**
  * Defines the Content Model
- * @package Miniweb
  */
 class Content extends Parsed
 {
@@ -32,7 +34,6 @@ class Content extends Parsed
 
     /**
      * Sets content type / route
-     * @param ContentType $contentType
      */
     public function setContentType(ContentType $contentType): void
     {
@@ -40,22 +41,18 @@ class Content extends Parsed
         $this->route = $contentType->slug;
     }
 
-    /**
-     * @return string
-     */
     public function getLink(): string
     {
         return $this->route . '/' . $this->slug;
     }
 
     /**
-     * @param string $file
      * @throws ContentNotFoundException
      */
     public function load(string $file): void
     {
         $this->path = $file;
-        if (!file_exists($this->path)) {
+        if (! file_exists($this->path)) {
             throw new ContentNotFoundException('Content not found.');
         }
 
@@ -65,22 +62,21 @@ class Content extends Parsed
     }
 
     /**
-     * @param ?string $path
+     * @param  ?string  $path
      */
-    public function save(string $path = null): void
+    public function save(?string $path = null): void
     {
-        if (!$path) {
+        if (! $path) {
             $path = $this->path;
         }
 
-        $file = fopen($path, "w+");
-        fputs($file, $this->raw);
+        $file = fopen($path, 'w+');
+        fwrite($file, $this->raw);
         fclose($file);
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getDate(): string
     {
@@ -89,7 +85,7 @@ class Content extends Parsed
 
         try {
             $date = new DateTime($parts[0]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $date = new DateTime();
         }
 
@@ -111,9 +107,6 @@ class Content extends Parsed
         return ucfirst(str_replace('-', ' ', $title));
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return str_replace('.md', '', basename($this->path));

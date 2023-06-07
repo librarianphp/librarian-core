@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian;
 
 use Iterator;
@@ -7,7 +9,6 @@ use Iterator;
 /**
  * Class ContentList
  * Facilitates lazy loading of content items in a Content collection
- * @package Librarian
  */
 class ContentCollection implements Iterator
 {
@@ -31,7 +32,7 @@ class ContentCollection implements Iterator
 
     public function current(): mixed
     {
-        if (!isset($this->content_list[$this->current_position])) {
+        if (! isset($this->content_list[$this->current_position])) {
             return null;
         }
 
@@ -40,7 +41,7 @@ class ContentCollection implements Iterator
 
     public function next(): void
     {
-        ++$this->current_position;
+        $this->current_position++;
     }
 
     public function key(): int
@@ -65,9 +66,6 @@ class ContentCollection implements Iterator
 
     /**
      * Returns a new collection with a subset of this collection's items
-     * @param $start
-     * @param $limit
-     * @return ContentCollection
      */
     public function slice($start, $limit): ContentCollection
     {

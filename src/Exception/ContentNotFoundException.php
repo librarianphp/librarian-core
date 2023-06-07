@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian\Exception;
 
-class ContentNotFoundException extends \Exception
+use Exception;
+
+class ContentNotFoundException extends Exception
 {
 }
