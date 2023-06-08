@@ -3,6 +3,7 @@
 namespace Librarian\Provider;
 
 use DateTime;
+use Librarian\Content;
 use Lukaswhite\FeedWriter\RSS2;
 use Minicli\App;
 use Minicli\Config;
@@ -46,6 +47,7 @@ class FeedServiceProvider implements ServiceInterface
 
         $content_list = $this->content_provider->fetchAll();
 
+        /** @var Content $content */
         foreach ($content_list as $content) {
             $channel
                 ->addItem()
