@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian\Provider;
 
 use Exception;
@@ -7,39 +9,34 @@ use Librarian\Content;
 use Librarian\ContentCollection;
 use Librarian\ContentType;
 use Librarian\Exception\ContentNotFoundException;
-use Minicli\App;
-use Minicli\ServiceInterface;
-use Minicli\Minicache\FileCache;
 use Librarian\Request;
+use Minicli\App;
+use Minicli\Minicache\FileCache;
+use Minicli\ServiceInterface;
 use Parsed\ContentParser;
 use Parsed\CustomTagParserInterface;
 
 class ContentServiceProvider implements ServiceInterface
 {
-    /** @var string */
     protected string $data_path;
 
-    /** @var string */
     protected string $cache_path;
 
-    /** @var array */
     protected array $parser_params = [];
 
-    /** @var ContentParser */
     protected ContentParser $parser;
 
     /**
-     * @param App $app
      * @throws Exception
      */
     public function load(App $app): void
     {
-        if (!$app->config->has('data_path')) {
-            throw new Exception("Missing Data Path.");
+        if (! $app->config->has('data_path')) {
+            throw new Exception('Missing Data Path.');
         }
 
-        if (!$app->config->has('cache_path')) {
-            throw new Exception("Missing Cache Path.");
+        if (! $app->config->has('cache_path')) {
+            throw new Exception('Missing Cache Path.');
         }
 
         $this->data_path = $app->config->data_path;
@@ -57,11 +54,6 @@ class ContentServiceProvider implements ServiceInterface
         $this->parser->addCustomTagParser($name, $tag_parser);
     }
 
-    /**
-     * @param string $route
-     * @param bool $parse_markdown
-     * @return Content|null
-     */
     public function fetch(string $route, bool $parse_markdown = true): ?Content
     {
         $request = new Request([], '/' . $route);
@@ -81,11 +73,6 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param int $start
-     * @param int $limit
-     * @param bool $parse_markdown
-     * @param string $orderBy
-     * @return ContentCollection
      * @throws ContentNotFoundException
      */
     public function fetchAll(int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ContentCollection
@@ -120,14 +107,12 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param int $per_page
-     * @return int
      * @throws ContentNotFoundException
      */
     public function fetchTotalPages(int $per_page = 20): int
     {
         $cache = new FileCache($this->cache_path);
-        $cache_id = "full_pagination";
+        $cache_id = 'full_pagination';
 
         $cached_content = $cache->getCachedUnlessExpired($cache_id);
 
@@ -141,9 +126,6 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param string $tag
-     * @param int $per_page
-     * @return int
      * @throws Exception
      */
     public function fetchTagTotalPages(string $tag, int $per_page = 20): int
@@ -155,13 +137,14 @@ class ContentServiceProvider implements ServiceInterface
 
     /**
      * @return array|mixed
+     *
      * @throws ContentNotFoundException
      */
     public function fetchTagList(bool $cached = true): ?array
     {
         if ($cached) {
             $cache = new FileCache($this->cache_path);
-            $cache_id = "full_tag_list";
+            $cache_id = 'full_tag_list';
 
             $cached_content = $cache->getCachedUnlessExpired($cache_id);
 
@@ -194,23 +177,21 @@ class ContentServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param string $tag
-     * @param int $start
-     * @param int $limit
      * @return mixed|null
+     *
      * @throws Exception
      */
     public function fetchFromTag(string $tag, int $start = 0, int $limit = 20): ?ContentCollection
     {
         $full_tag_list = $this->fetchTagList();
         $collection = new ContentCollection();
-        if (key_exists($tag, $full_tag_list)) {
+        if (array_key_exists($tag, $full_tag_list)) {
             foreach ($full_tag_list[$tag] as $route) {
                 $article = $this->fetch($route);
                 $collection->add($article);
             }
 
-            if (!$limit) {
+            if (! $limit) {
                 return $collection;
             }
 
@@ -249,6 +230,7 @@ class ContentServiceProvider implements ServiceInterface
     {
         return new ContentType($contentType, $this->data_path);
     }
+
     public function fetchFrom(ContentType $contentType, int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ?ContentCollection
     {
         $feed = [];
@@ -278,9 +260,7 @@ class ContentServiceProvider implements ServiceInterface
 
     public function orderBy(array $content, string $orderBy = 'desc'): array
     {
-        uasort($content, function (Content $content1, Content $content2) {
-            return (strtolower($content1->slug) < strtolower($content2->slug)) ? -1 : 1;
-        });
+        uasort($content, fn (Content $content1, Content $content2) => (strtolower($content1->slug) < strtolower($content2->slug)) ? -1 : 1);
 
         if ($orderBy === 'index') {
             $order = [];

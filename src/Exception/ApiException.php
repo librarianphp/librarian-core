@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian\Exception;
 
-class ApiException extends \Exception
+use Exception;
+
+class ApiException extends Exception
 {
 }

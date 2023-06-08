@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian;
 
 use Parsed\ContentParser;
@@ -7,15 +9,14 @@ use Parsed\ContentParser;
 class ContentType
 {
     public string $slug;
-    public string $contentDir;
-    public string $title;
-    public string $description = "";
-    public int $index = 100;
 
-    public function __toString(): string
-    {
-        return $this->title;
-    }
+    public string $contentDir;
+
+    public string $title;
+
+    public string $description = '';
+
+    public int $index = 100;
 
     /**
      * @throws Exception\ContentNotFoundException
@@ -28,6 +29,11 @@ class ContentType
         $this->loadMetadata();
     }
 
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
     /**
      * @throws Exception\ContentNotFoundException
      */
@@ -38,7 +44,7 @@ class ContentType
             $metadata->load($this->contentDir . '/' . $this->slug . '/_index');
             $metadata->parse(new ContentParser());
             $this->title = $metadata->frontMatterGet('title') ?? ucfirst($this->slug);
-            $this->description = $metadata->frontMatterGet('description') ?? "";
+            $this->description = $metadata->frontMatterGet('description') ?? '';
             $this->index = (int) $metadata->frontMatterGet('index') ?? 10;
         }
     }

@@ -22,11 +22,17 @@
   },
   "require-dev": {
     "pestphp/pest": "^1.0",
-    "friendsofphp/php-cs-fixer": "^3.16"
+    "friendsofphp/php-cs-fixer": "^3.16",
+    "laravel/pint": "^1.10"
   },
   "scripts": {
-    "test" : ["pest"],
-    "csfix": ["php-cs-fixer fix"]
+    "lint": ["pint"],
+    "test:unit" : ["pest"],
+    "test:lint": ["pint --test"],
+    "test" : [
+        "@test:lint",
+        "@test:unit"
+    ]
   },
   "config": {
     "allow-plugins": {

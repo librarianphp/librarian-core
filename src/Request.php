@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian;
 
 class Request
@@ -38,49 +40,31 @@ class Request
         $this->slug = str_replace('/' . $this->route . '/', '', $this->path);
     }
 
-    /**
-     * @return array
-     */
     public function getParams(): array
     {
         return $this->params;
     }
 
-    /**
-     * @return string
-     */
     public function getRequestUri(): string
     {
         return $this->request_uri;
     }
 
-    /**
-     * @return array|null
-     */
     public function getRequestInfo(): ?array
     {
         return $this->request_info;
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @return string
-     */
     public function getRoute(): string
     {
         return $this->route;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;

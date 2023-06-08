@@ -1,33 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian\Provider;
 
 use Exception;
 use Minicli\App;
+use Minicli\ServiceInterface;
+use Twig\Environment as TwigEnvironment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
-use Minicli\ServiceInterface;
-use Twig\Environment as TwigEnvironment;
 
 class TwigServiceProvider implements ServiceInterface
 {
-    /** @var string */
     protected string $templates_path;
-    /** @var TwigEnvironment */
+
     protected TwigEnvironment $twig;
 
     /**
-     * @param App $app
      * @throws Exception
      */
     public function load(App $app): void
     {
         $config = $app->config;
 
-        if (!$config->has('templates_path')) {
-            throw new Exception("Missing Templates Path.");
+        if (! $config->has('templates_path')) {
+            throw new Exception('Missing Templates Path.');
         }
 
         $this->setTemplatesPath($config->templates_path);
@@ -42,34 +42,22 @@ class TwigServiceProvider implements ServiceInterface
         $this->twig = new TwigEnvironment($loader, $params);
     }
 
-    /**
-     * @return TwigEnvironment
-     */
     public function getTwig(): TwigEnvironment
     {
         return $this->twig;
     }
 
-    /**
-     * @param string $path
-     */
     public function setTemplatesPath(string $path): void
     {
         $this->templates_path = $path;
     }
 
-    /**
-     * @return string
-     */
     public function getTemplatesPath(): string
     {
         return $this->templates_path;
     }
 
     /**
-     * @param $template_file
-     * @param array $data
-     * @return string
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -77,6 +65,7 @@ class TwigServiceProvider implements ServiceInterface
     public function render($template_file, array $data): string
     {
         $template = $this->twig->load($template_file);
+
         return $template->render($data);
     }
 }
