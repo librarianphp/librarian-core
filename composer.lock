@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b246fdcff9d40ac8d0216bea83c2c539",
+    "content-hash": "3783c34021ed6ba1659fb70f96f2c17f",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -317,6 +317,51 @@
                 }
             ],
             "time": "2023-05-07T12:45:30+00:00"
+        },
+        {
+            "name": "lukaswhite/php-feed-writer",
+            "version": "2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lukaswhite/php-feed-writer.git",
+                "reference": "a337fc6f6577f87437bafe0a88c1d8128aeeb0ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lukaswhite/php-feed-writer/zipball/a337fc6f6577f87437bafe0a88c1d8128aeeb0ae",
+                "reference": "a337fc6f6577f87437bafe0a88c1d8128aeeb0ae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^9.2",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Lukaswhite\\FeedWriter\\": "src/",
+                    "Lukaswhite\\FeedWriter\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lukaswhite",
+                    "email": "hello@lukaswhite.com"
+                }
+            ],
+            "description": "A PHP library for writing feeds; e.g. RSS",
+            "support": {
+                "issues": "https://github.com/lukaswhite/php-feed-writer/issues",
+                "source": "https://github.com/lukaswhite/php-feed-writer/tree/2.1"
+            },
+            "time": "2022-07-26T10:34:20+00:00"
         },
         {
             "name": "minicli/curly",
