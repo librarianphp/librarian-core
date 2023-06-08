@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Librarian\Provider;
 
 use DateTime;
@@ -11,15 +13,10 @@ use Minicli\ServiceInterface;
 
 class FeedServiceProvider implements ServiceInterface
 {
-    /** @var Config */
     public Config $site_config;
 
-    /** @var ContentServiceProvider */
     public ContentServiceProvider $content_provider;
 
-    /**
-     * @param App $app
-     */
     public function load(App $app): void
     {
         $this->site_config = $app->config;
@@ -27,8 +24,6 @@ class FeedServiceProvider implements ServiceInterface
     }
 
     /**
-     * @param bool $is_static
-     * @return RSS2
      * @throws \Librarian\Exception\ContentNotFoundException
      */
     public function buildFeed(bool $is_static = false): RSS2
@@ -42,7 +37,7 @@ class FeedServiceProvider implements ServiceInterface
             ->link($this->site_config->site_url)
             ->addLink('href', $this->getCustomFeedPath($is_static))
             ->language('en-US')
-            ->copyright('Copyright ' . date('Y') . ', '. $this->site_config->site_name)
+            ->copyright('Copyright ' . date('Y') . ', ' . $this->site_config->site_name)
             ->pubDate(new DateTime())
             ->lastBuildDate(new DateTime())
             ->ttl(60);
@@ -65,10 +60,6 @@ class FeedServiceProvider implements ServiceInterface
         return $feed;
     }
 
-    /**
-     * @param bool $is_static
-     * @return string
-     */
     public function getCustomFeedPath(bool $is_static = false): string
     {
         return $is_static

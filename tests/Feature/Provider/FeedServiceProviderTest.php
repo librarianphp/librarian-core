@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Librarian\Provider\ContentServiceProvider;
 use Librarian\Provider\FeedServiceProvider;
 use Lukaswhite\FeedWriter\RSS2;
