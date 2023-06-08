@@ -28,6 +28,8 @@ class FeedServiceProvider implements ServiceInterface
 
     /**
      * @param bool $is_static
+     * @return RSS2
+     * @throws \Librarian\Exception\ContentNotFoundException
      */
     public function buildFeed(bool $is_static = false): RSS2
     {
