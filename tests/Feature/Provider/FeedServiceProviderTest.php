@@ -27,8 +27,8 @@ beforeEach(function () {
 });
 
 it('returns correctly custom feed path', function () {
-    expect($this->app->feed->getCustomFeedPath(is_static: false))->toBe('::site_url::/feed')
-        ->and($this->app->feed->getCustomFeedPath(is_static: true))->toBe('::site_url::/feed.rss');
+    expect($this->app->feed->getCustomFeedPath(is_static: false))->toBe('/feed')
+        ->and($this->app->feed->getCustomFeedPath(is_static: true))->toBe('/feed.rss');
 });
 
 it('builds rss feed', function () {
