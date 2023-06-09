@@ -35,7 +35,7 @@ class FeedServiceProvider implements ServiceInterface
             ->title($this->site_config->site_name)
             ->description($this->site_config->site_description)
             ->link($this->site_config->site_url)
-            ->addLink('href', $this->getCustomFeedPath($is_static))
+            ->addLink('href', $this->site_config->site_url . $this->getCustomFeedPath($is_static))
             ->language('en-US')
             ->copyright('Copyright ' . date('Y') . ', ' . $this->site_config->site_name)
             ->pubDate(new DateTime())
@@ -62,8 +62,6 @@ class FeedServiceProvider implements ServiceInterface
 
     public function getCustomFeedPath(bool $is_static = false): string
     {
-        return $is_static
-            ? $this->site_config->site_url . '/feed.rss'
-            : $this->site_config->site_url . '/feed';
+        return $is_static ? '/feed.rss' : '/feed';
     }
 }
