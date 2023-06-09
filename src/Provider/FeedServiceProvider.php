@@ -48,7 +48,7 @@ class FeedServiceProvider implements ServiceInterface
         foreach ($content_list as $content) {
             $channel
                 ->addItem()
-                ->title($content->frontMatterGet('title', $content->getAlternateTitle()))
+                ->title($content->frontMatterGet('title', $content->default_title))
                 ->description('<div>' . $content->frontMatterGet('description', '') . '</div>')
                 ->encodedContent('<div>' . $content->frontMatterGet('description', '') . '</div>')
                 ->link($this->site_config->site_url . '/' . $content->getLink())
