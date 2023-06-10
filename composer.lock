@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d720d5bf5aa4195b285c566bc60b0b9",
+    "content-hash": "01d6f26378871492a541ad30e4fa839d",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -319,6 +319,51 @@
             "time": "2023-05-07T12:45:30+00:00"
         },
         {
+            "name": "lukaswhite/php-feed-writer",
+            "version": "2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lukaswhite/php-feed-writer.git",
+                "reference": "a337fc6f6577f87437bafe0a88c1d8128aeeb0ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lukaswhite/php-feed-writer/zipball/a337fc6f6577f87437bafe0a88c1d8128aeeb0ae",
+                "reference": "a337fc6f6577f87437bafe0a88c1d8128aeeb0ae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^9.2",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Lukaswhite\\FeedWriter\\": "src/",
+                    "Lukaswhite\\FeedWriter\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lukaswhite",
+                    "email": "hello@lukaswhite.com"
+                }
+            ],
+            "description": "A PHP library for writing feeds; e.g. RSS",
+            "support": {
+                "issues": "https://github.com/lukaswhite/php-feed-writer/issues",
+                "source": "https://github.com/lukaswhite/php-feed-writer/tree/2.1"
+            },
+            "time": "2022-07-26T10:34:20+00:00"
+        },
+        {
             "name": "minicli/curly",
             "version": "0.2.2",
             "source": {
@@ -405,16 +450,16 @@
         },
         {
             "name": "minicli/minicli",
-            "version": "4.0.3",
+            "version": "4.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/minicli/minicli.git",
-                "reference": "7ccff45d4311e31a2fba896dfe70d4d2c6671aab"
+                "reference": "1f71a5d8ec76d5b07280816ffcc9b36499830f43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minicli/minicli/zipball/7ccff45d4311e31a2fba896dfe70d4d2c6671aab",
-                "reference": "7ccff45d4311e31a2fba896dfe70d4d2c6671aab",
+                "url": "https://api.github.com/repos/minicli/minicli/zipball/1f71a5d8ec76d5b07280816ffcc9b36499830f43",
+                "reference": "1f71a5d8ec76d5b07280816ffcc9b36499830f43",
                 "shasum": ""
             },
             "require": {
@@ -429,6 +474,9 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
                 "psr-4": {
                     "Minicli\\": "src/"
                 }
@@ -445,7 +493,7 @@
             ],
             "support": {
                 "issues": "https://github.com/minicli/minicli/issues",
-                "source": "https://github.com/minicli/minicli/tree/4.0.3"
+                "source": "https://github.com/minicli/minicli/tree/4.0.5"
             },
             "funding": [
                 {
@@ -453,7 +501,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-20T22:04:58+00:00"
+            "time": "2023-06-07T18:49:30+00:00"
         },
         {
             "name": "minicli/stencil",
@@ -1015,16 +1063,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "106c170d08e8415d78be2d16c3d057d0d108262b"
+                "reference": "7e7d5839d4bec168dfeef0ac66d5c5a2edbabffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/106c170d08e8415d78be2d16c3d057d0d108262b",
-                "reference": "106c170d08e8415d78be2d16c3d057d0d108262b",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7e7d5839d4bec168dfeef0ac66d5c5a2edbabffd",
+                "reference": "7e7d5839d4bec168dfeef0ac66d5c5a2edbabffd",
                 "shasum": ""
             },
             "require": {
@@ -1070,7 +1118,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.6.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.6.1"
             },
             "funding": [
                 {
@@ -1082,7 +1130,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-03T19:06:57+00:00"
+            "time": "2023-06-08T12:52:13+00:00"
         }
     ],
     "packages-dev": [
