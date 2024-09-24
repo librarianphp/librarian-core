@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Librarian\Provider;
 
 use Exception;
+use Librarian\ContentType;
 use Librarian\Exception\ContentNotFoundException;
 use Minicli\App;
 use Minicli\ServiceInterface;
@@ -82,6 +83,9 @@ class LibrarianServiceProvider implements ServiceInterface
         $twig->addFunction(new TwigFunction('table_of_contents', function ($content_type) use ($app) {
             /** @var ContentServiceProvider $content */
             $content = $app->content;
+            if (is_string($content_type)) {
+                $content_type = new ContentType($content_type, $app->config->data_dir . '/' . $content_type);
+            }
 
             return $content->fetchFrom($content_type, 0, 0, false, 'index');
         }));

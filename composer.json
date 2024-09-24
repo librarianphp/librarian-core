@@ -10,7 +10,7 @@
     }
   },
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.2",
     "ext-curl": "*",
     "ext-json": "*",
     "minicli/curly": "^0.2",
@@ -21,8 +21,8 @@
     "twig/twig": "^3.6"
   },
   "require-dev": {
-    "pestphp/pest": "^1.23",
-    "laravel/pint": "^1.10"
+    "pestphp/pest": "^3.2",
+    "laravel/pint": "^1.1"
   },
   "scripts": {
     "lint": ["pint"],

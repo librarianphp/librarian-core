@@ -61,9 +61,6 @@ class Content extends Parsed
         $this->default_title = $this->getAlternateTitle();
     }
 
-    /**
-     * @param  ?string  $path
-     */
     public function save(?string $path = null): void
     {
         if (! $path) {
@@ -92,9 +89,6 @@ class Content extends Parsed
         return $date->format('F d, Y');
     }
 
-    /**
-     * @return ?string
-     */
     public function getAlternateTitle(): ?string
     {
         $slug = $this->getSlug();

@@ -16,7 +16,7 @@ class Request
 
     /**
      * @var string Requested route, such as "home", "index", "blog", etc
-     * only 1 level is supported
+     *             only 1 level is supported
      */
     protected string $route;
 

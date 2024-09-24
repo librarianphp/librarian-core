@@ -6,6 +6,4 @@ namespace Librarian\Exception;
 
 use Exception;
 
-class ApiException extends Exception
-{
-}
+class ApiException extends Exception {}
