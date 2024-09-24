@@ -6,6 +6,4 @@ namespace Librarian\Exception;
 
 use Exception;
 
-class ContentNotFoundException extends Exception
-{
-}
+class ContentNotFoundException extends Exception {}

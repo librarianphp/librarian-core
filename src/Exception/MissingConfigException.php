@@ -6,6 +6,4 @@ namespace Librarian\Exception;
 
 use Exception;
 
-class MissingConfigException extends Exception
-{
-}
+class MissingConfigException extends Exception {}
