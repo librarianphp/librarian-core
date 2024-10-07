@@ -18,6 +18,8 @@ class ContentType
 
     public int $index = 100;
 
+    public array $children = [];
+
     /**
      * @throws Exception\ContentNotFoundException
      */

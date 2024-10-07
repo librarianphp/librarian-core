@@ -204,14 +204,17 @@ class ContentServiceProvider implements ServiceInterface
     /**
      * @throws ContentNotFoundException
      */
-    public function getContentTypes(): array
+    public function getContentTypes(?string $path = null, string $parent = ''): array
     {
         $contentTypes = [];
         $order = [];
-        foreach (glob($this->data_path . '/*', GLOB_ONLYDIR) as $route) {
-            $content = new ContentType(basename($route), $this->data_path);
+        $data_path = $path ?? $this->data_path;
+        foreach (glob($data_path . '/*', GLOB_ONLYDIR) as $route) {
+            $content = new ContentType($parent . basename($route), $data_path);
             $contentTypes[$content->slug] = $content;
             $order[$content->slug] = $content->index;
+
+            $content->children = $this->getContentTypes($route, $content->slug . '/');
         }
 
         asort($order, SORT_NUMERIC);
@@ -228,7 +231,10 @@ class ContentServiceProvider implements ServiceInterface
      */
     public function getContentType(string $contentType): ContentType
     {
-        return new ContentType($contentType, $this->data_path);
+        $content = new ContentType($contentType, $this->data_path);
+        $content->children = $this->getContentTypes($content->contentDir . '/' . $content->slug, $content->slug);
+
+        return $content;
     }
 
     public function fetchFrom(ContentType $contentType, int $start = 0, int $limit = 20, bool $parse_markdown = false, string $orderBy = 'desc'): ?ContentCollection
