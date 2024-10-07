@@ -38,6 +38,12 @@ it('loads content from request and parses front matter', function () {
         ->and($content->body_markdown)->toBeString();
 });
 
+it('loads nested content and parses front matter', function () {
+    $content = $this->app->content->fetch('docs/en/test0');
+    expect($content->frontMatterGet('title'))->toBe('Testing Sub-Level En')
+        ->and($content->body_markdown)->toBeString();
+});
+
 it('loads the full list of content when no limit is passed', function () {
     $content = $this->app->content->fetchAll(0, 0);
     expect($content)->toBeInstanceOf(ContentCollection::class)
@@ -48,6 +54,34 @@ it('loads tag list', function () {
     $tags = $this->app->content->fetchTagList(false);
     expect($tags)->toBeArray()
         ->and(count($tags))->toBeGreaterThan(2);
+});
+
+it('loads the right number of content types', function () {
+    $types = $this->app->content->getContentTypes();
+    expect($types)->toHaveCount(3);
+});
+
+it('loads the right number of articles in a top-level ContentType', function () {
+    $type = $this->app->content->getContentType('docs');
+    expect($type)->toBeInstanceOf(ContentType::class)
+        ->and($type->title)->toBe('Docs')
+        ->and($this->app->content->fetchFrom($type))->toHaveCount(1);
+
+});
+
+it('loads nested Content Types', function () {
+    $type = $this->app->content->getContentType('docs');
+    expect($type)->toBeInstanceOf(ContentType::class)
+        ->and($type->children)->toHaveCount(2);
+
+});
+
+it('fetches a nested content type and its posts', function () {
+    $type = $this->app->content->getContentType('docs/en');
+    expect($type)->toBeInstanceOf(ContentType::class)
+        ->and($type->title)->toBe('English Docs')
+        ->and($this->app->content->fetchFrom($type))->toHaveCount(2);
+
 });
 
 it('loads content types respecting index order', function () {
