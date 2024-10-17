@@ -22,7 +22,8 @@
   },
   "require-dev": {
     "pestphp/pest": "^3.2",
-    "laravel/pint": "^1.1"
+    "laravel/pint": "^1.1",
+    "mockery/mockery": "^1.6"
   },
   "scripts": {
     "lint": ["pint"],

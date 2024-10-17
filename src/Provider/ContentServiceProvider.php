@@ -94,6 +94,10 @@ class ContentServiceProvider implements ServiceInterface
                 } catch (Exception $e) {
                 }
             }
+
+            if (count($contentType->children)) {
+
+            }
         }
 
         $list = $this->orderBy($list, $orderBy);
