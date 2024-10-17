@@ -47,7 +47,7 @@ it('loads nested content and parses front matter', function () {
 it('loads the full list of content when no limit is passed', function () {
     $content = $this->app->content->fetchAll(0, 0);
     expect($content)->toBeInstanceOf(ContentCollection::class)
-        ->and($content->total())->toBeGreaterThan(2);
+        ->and($content->total())->toBe(5);
 });
 
 it('loads tag list', function () {

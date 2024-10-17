@@ -6,22 +6,38 @@ namespace Librarian;
 
 class Request
 {
+    /**
+     * Parameters from Request
+     */
     protected array $params;
 
+    /**
+     * The full request string
+     */
     protected string $request_uri;
 
+    /**
+     * Request information
+     */
     protected ?array $request_info;
 
+    /**
+     * Full request path
+     */
     protected string $path;
 
     /**
-     * @var string Requested route, such as "home", "index", "blog", etc
-     *             only 1 level is supported
+     * The root of the path
      */
     protected string $route;
 
     /**
-     * @var string Slug if present (request path minus route)
+     * Parent route, used for content types
+     */
+    protected string $parent;
+
+    /**
+     * Final portion of the request string, when present
      */
     protected string $slug;
 
@@ -33,10 +49,9 @@ class Request
         $this->request_info = parse_url($this->request_uri);
         $this->path = $this->request_info['path'];
 
-        //make sure to get the first part only
         $parts = explode('/', $this->path);
-
         $this->route = $parts[1];
+        $this->parent = dirname($this->path);
         $this->slug = str_replace('/' . $this->route . '/', '', $this->path);
     }
 
@@ -68,5 +83,10 @@ class Request
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function getParent(): string
+    {
+        return $this->parent;
     }
 }

@@ -6,6 +6,9 @@ namespace Librarian;
 
 use Parsed\ContentParser;
 
+/**
+ * A ContentType is a node with either children nodes or content files
+ */
 class ContentType
 {
     public string $slug;
