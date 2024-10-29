@@ -41,7 +41,7 @@ it('loads content in nested structure', function () {
     $request = $this->app->router->getRequest();
     expect($request->getRoute())->toBe('docs')
         ->and($request->getParent())->toBe('/docs/en')
-        ->and($request->getSlug())->toBe('en/test0');
+        ->and($request->getSlug())->toBe('test0');
 
     $contentType = $this->app->content->getContentType($request->getParent());
     expect($contentType)->toBeInstanceOf(ContentType::class)
