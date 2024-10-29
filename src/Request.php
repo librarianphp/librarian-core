@@ -52,7 +52,7 @@ class Request
         $parts = explode('/', $this->path);
         $this->route = $parts[1];
         $this->parent = dirname($this->path);
-        $this->slug = str_replace('/' . $this->route . '/', '', $this->path);
+        $this->slug = basename($this->path);
     }
 
     public function getParams(): array
